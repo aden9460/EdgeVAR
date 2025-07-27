@@ -1,0 +1,71 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "sample",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/wangzefang/Projects/project/slim_VAR/VAR/sample.py",
+            "console": "integratedTerminal",
+            "args": "${command:pickArgs}"
+        },
+        {
+            "name": "Python: model_slimming",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/wangzefang/Projects/project/slim_VAR/slimgpt_pub/model_slimming.py",
+            "console": "integratedTerminal",
+            "env": {
+                "CUDA_VISIBLE_DEVICES":"0,1,2,3"
+            },
+            "args": [
+                "--model_path", "/home/sumingluo/Model_weight/meta/llama-2-7b-hf",
+                "--dataset", "wikitext2",
+                "--minlayer", "0",
+                "--maxlayer", "16",
+                "--num_samples", "50",
+                "--seqlen", "256",
+                "--percdamp", "1e-3",
+                // "--non_uniform",
+                // "--non_uniform_strategy", "log_increase",
+                "--min_sparsity", "0.0625",
+                "--max_sparsity", "0.3",
+                "--skip_evaluate",
+                "--prune_method","slimgpt",
+                "--sparsity","0.4"
+
+            ]
+                },
+        {
+            "name": "Python: prune",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/wangzefang/Projects/project/slim_VAR/slimgpt_pub/prune.py",
+            "console": "integratedTerminal",
+            "env": {
+                "CUDA_VISIBLE_DEVICES":"6"
+            },
+            "args": [
+                "--model_path", "/home/sumingluo/Model_weight/meta/llama-2-7b-hf",
+                "--dataset", "wikitext2",
+                "--minlayer", "0",
+                "--maxlayer", "16",
+                "--num_samples", "50",
+                "--seqlen", "256",
+                "--percdamp", "1e-3",
+                // "--non_uniform",
+                // "--non_uniform_strategy", "log_increase",
+                "--min_sparsity", "0.0625",
+                "--max_sparsity", "0.3",
+                "--skip_evaluate",
+                "--prune_method","slimgpt",
+                "--sparsity","0.4"
+
+            ]
+                }
+    ]
+}
