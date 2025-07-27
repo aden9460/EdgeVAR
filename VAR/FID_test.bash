@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICES=0 python FID_test.py --depth 24 --sparsity 0 --data_path="/datasets/liying/datasets/imagenet" 
