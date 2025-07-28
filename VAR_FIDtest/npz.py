@@ -13,11 +13,11 @@ import os
 
 
 # 加载 npz 文件
-data = np.load('/wanghuan/data/wangzefang/slim_VAR_copy/VAR/FID_test/VIRTUAL_imagenet256_labeled.npz')
+data = np.load('/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_VAR/VIRTUAL_imagenet256_labeled.npz')
 images = data['arr_0']
 
 # 保存目录
-save_dir = '/wanghuan/data/wangzefang/slim_VAR_copy/VAR/FID_test/virtual_images'
+save_dir = '/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_VAR/virtual_images/'
 os.makedirs(save_dir, exist_ok=True)
 
 # 循环保存图片

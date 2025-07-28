@@ -9,7 +9,7 @@ setattr(torch.nn.Linear, 'reset_parameters', lambda self: None)     # disable de
 setattr(torch.nn.LayerNorm, 'reset_parameters', lambda self: None)  # disable default parameter init for faster speed
 from models import VQVAE, build_vae_var
 from torchvision.utils import save_image
-MODEL_DEPTH = 24    # TODO: =====> please specify MODEL_DEPTH <=====
+MODEL_DEPTH = 16    # TODO: =====> please specify MODEL_DEPTH <=====
 assert MODEL_DEPTH in {16, 20, 24, 30}
 from utils import arg_util, misc
 from tqdm import tqdm
@@ -18,7 +18,7 @@ args: arg_util.Args = arg_util.init_dist_and_get_args()
 # download checkpoint
 hf_home = 'https://huggingface.co/FoundationVision/var/resolve/main'
 # vae_ckpt, var_ckpt = '/wanghuan/data/wangzefang/slim_VAR_copy/VAR/model_zoo/vae_ch160v4096z32.pth', f'/wanghuan/data/wangzefang/slim_VAR_copy/VAR/model_zoo/var_d{MODEL_DEPTH}.pth'
-vae_ckpt = '/wanghuan/data/wangzefang/slim_VAR_copy/VAR/model_zoo/vae_ch160v4096z32.pth'
+vae_ckpt = '/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_VAR/model_zoo/vae_ch160v4096z32.pth'
 var_ckpt = args.var_model
 print(var_ckpt)
 #    /home/wangzefang/Projects/project/slim_VAR/slimgpt_pub/sparsity_model/d24_0.4var_1i_256input.pth
@@ -140,7 +140,7 @@ torch.backends.cudnn.allow_tf32 = bool(tf32)
 torch.backends.cuda.matmul.allow_tf32 = bool(tf32)
 torch.set_float32_matmul_precision('high' if tf32 else 'highest')
 output_name = args.output_name
-save_dir = f"/wanghuan/data/wangzefang/VAR/FID_test/image/{output_name}"
+save_dir = f"/home/wangzefang/edgevar/EdgeVAR/VAR_FIDtest/output/FID_test/{output_name}"
 os.makedirs(save_dir,exist_ok=True)
 # sample
 progress_bar = tqdm(total=1000, desc="生成FID样本")
@@ -157,7 +157,6 @@ with torch.inference_mode():
                 img = recon_B3HW[i].permute(1, 2, 0).mul(255).cpu().numpy()
                 img = PImage.fromarray(img.astype(np.uint8))
                 img.save(f'{save_dir}/{class_num:03d}_img_{i:03d}.png')
-
 progress_bar.close()
 # chw = torchvision.utils.make_grid(recon_B3HW, nrow=8, padding=0, pad_value=1.0)
 # chw = chw.permute(1, 2, 0).mul_(255).cpu().numpy()

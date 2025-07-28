@@ -94,7 +94,7 @@ def build_everything(args: arg_util.Args):
         flash_if_available=args.fuse, fused_if_available=args.fuse,
         init_adaln=args.aln, init_adaln_gamma=args.alng, init_head=args.hd, init_std=args.ini,args=args
     )
-    checkpoint = torch.load("/wanghuan/data/wangzefang/slim_VAR_copy/VAR/d20_0.2_0-10/ar-ckpt-last.pth", map_location='cpu')
+    checkpoint = torch.load("/home/wangzefang/edgevar/EdgeVAR/slimgpt_pub/output/sparsity_model/d16_0.2_256_input_200i.pth", map_location='cpu')
     if 'trainer' in checkpoint:
         print("检测到训练检查点文件，正在提取模型权重...")
         if 'var_wo_ddp' in checkpoint['trainer']:
@@ -109,7 +109,7 @@ def build_everything(args: arg_util.Args):
         var_wo_ddp.load_state_dict(checkpoint, strict=True)
 
     # var_wo_ddp.load_state_dict(torch.load("/wanghuan/data/wangzefang/slim_VAR_copy/VAR/local_output/ar-ckpt-last.pth"))
-    vae_ckpt = '/wanghuan/data/wangzefang/slim_VAR_copy/VAR/model_zoo/vae_ch160v4096z32.pth'
+    vae_ckpt = '/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_VAR/model_zoo/vae_ch160v4096z32.pth'
     vae_local.load_state_dict(torch.load(vae_ckpt, map_location='cpu'), strict=False)
     if dist.is_local_master():
         if not os.path.exists(vae_ckpt):

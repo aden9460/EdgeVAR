@@ -127,13 +127,13 @@ class VAR(nn.Module):
             h = h_or_h_and_residual
         return self.head(self.head_nm(h.float(), cond_BD).float()).float()
     
-    # @torch.no_grad()
-    # def autoregressive_infer_cfg(
-    #     self, B: int, label_B: Optional[Union[int, torch.LongTensor]],
-    #     g_seed: Optional[int] = None, cfg=1.5, top_k=0, top_p=0.0,
-    #     more_smooth=False,
-    def forward(
-        self, label_B: Optional[Union[int, torch.LongTensor, torch.Tensor]]
+    @torch.no_grad()
+    def autoregressive_infer_cfg(
+        self, B: int, label_B: Optional[Union[int, torch.LongTensor]],
+        g_seed: Optional[int] = None, cfg=1.5, top_k=0, top_p=0.0,
+        more_smooth=False,
+    # def forward(
+        # self, label_B: Optional[Union[int, torch.LongTensor, torch.Tensor]]
     ) -> torch.Tensor:   # returns reconstructed image (B, 3, H, W) in [0, 1]
         """
         only used for inference, on autoregressive mode
@@ -209,7 +209,7 @@ class VAR(nn.Module):
         for b in self.blocks: b.attn.kv_caching(False)
         return self.vae_proxy[0].fhat_to_img(f_hat).add_(1).mul_(0.5)   # de-normalize, from [-1, 1] to [0, 1]
     
-    def forward0(self, label_B: torch.LongTensor, x_BLCv_wo_first_l: torch.Tensor) -> torch.Tensor:  # returns logits_BLV
+    def forward(self, label_B: torch.LongTensor, x_BLCv_wo_first_l: torch.Tensor) -> torch.Tensor:  # returns logits_BLV
         """
         :param label_B: label_B
         :param x_BLCv_wo_first_l: teacher forcing input (B, self.L-self.first_l, self.Cvae)

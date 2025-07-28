@@ -12,9 +12,10 @@ from slim_utils.slim_dataset import get_loaders
 from slim_utils.params_remove import LLaMAParamsPruner
 from ppl_eval.ppl_eval import ppl_metric
 from torchvision.utils import save_image
-
+import sys
+sys.path.append("/home/wangzefang/edgevar/EdgeVAR/Torch-Pruning")
 from importlib.metadata import version
-from transformers import AutoTokenizer, AutoModelForCausalLM,LlamaForCausalLM
+# from transformers import AutoTokenizer, AutoModelForCausalLM,LlamaForCausalLM
 setattr(torch.nn.Linear, 'reset_parameters', lambda self: None)     # disable default parameter init for faster speed
 setattr(torch.nn.LayerNorm, 'reset_parameters', lambda self: None)  # disable default parameter init for faster speed
 import os
@@ -74,25 +75,25 @@ def check_sparsity(model):
     return float(count) / total_params
 
 
-def get_model(model_dir):
-    # def skip(*args, **kwargs):
-    #     pass
-    # torch.nn.init.kaiming_uniform_ = skip
-    # torch.nn.init.uniform_ = skip
-    # torch.nn.init.normal_ = skip
-    model =  LlamaForCausalLM.from_pretrained(
-        torch_dtype=torch.float16, 
-        low_cpu_mem_usage=True, 
-        device_map="auto",
-        pretrained_model_name_or_path = model_dir
-    )
-    model.seqlen = 2048
+# def get_model(model_dir):
+#     # def skip(*args, **kwargs):
+#     #     pass
+#     # torch.nn.init.kaiming_uniform_ = skip
+#     # torch.nn.init.uniform_ = skip
+#     # torch.nn.init.normal_ = skip
+#     model =  LlamaForCausalLM.from_pretrained(
+#         torch_dtype=torch.float16, 
+#         low_cpu_mem_usage=True, 
+#         device_map="auto",
+#         pretrained_model_name_or_path = model_dir
+#     )
+#     model.seqlen = 2048
 
-    tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path = model_dir, 
-                                              use_fast=False)
-    tokenizer.bos_token = '<s>'  # token_id 1
-    tokenizer.eos_token = tokenizer.pad_token = tokenizer.unk_token = '</s>'  # token_id 2 
-    return model, tokenizer
+#     tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path = model_dir, 
+#                                               use_fast=False)
+#     tokenizer.bos_token = '<s>'  # token_id 1
+#     tokenizer.eos_token = tokenizer.pad_token = tokenizer.unk_token = '</s>'  # token_id 2 
+#     return model, tokenizer
 
 
 class Catcher(nn.Module):
@@ -412,7 +413,7 @@ def model_slimming(model, dataloader, args):
     return model
     
 
-MODEL_DEPTH =  24   # TODO: =====> please specify MODEL_DEPTH <=====
+MODEL_DEPTH =  16   # TODO: =====> please specify MODEL_DEPTH <=====
 assert MODEL_DEPTH in {12,16, 20, 24, 30}
 
 def main(args):
@@ -420,7 +421,7 @@ def main(args):
     # model, tokenizer = get_model(args.model_path)
 
     hf_home = 'https://huggingface.co/FoundationVision/var/resolve/main'
-    vae_ckpt, var_ckpt = '/wanghuan/data/wangzefang/slim_VAR_copy/VAR/model_zoo/vae_ch160v4096z32.pth', f'/wanghuan/data/wangzefang/slim_VAR_copy/VAR/model_zoo/var_d{MODEL_DEPTH}.pth'
+    vae_ckpt, var_ckpt = '/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_VAR/model_zoo/vae_ch160v4096z32.pth', f'/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_VAR/model_zoo/var_d{MODEL_DEPTH}.pth'
     if not osp.exists(vae_ckpt): os.system(f'wget {hf_home}/{vae_ckpt}')
     if not osp.exists(var_ckpt): os.system(f'wget {hf_home}/{var_ckpt}')
 
@@ -478,7 +479,7 @@ def main(args):
     #     seqlen=model.seqlen,
     #     tokenizer=tokenizer
     # )
-    dataloader = torch.arange(0,5).cuda()
+    dataloader = torch.arange(0,args.num_samples).cuda()
 
     num_samples = len(dataloader)
     if args.num_samples != num_samples:
@@ -529,7 +530,7 @@ def main(args):
 
     # save_dir = "/wanghuan/data/wangzefang/slim_VAR_copy/slimgpt_pub/image/d24_test_0.2_200i_temporary_c-p+_linear"
     # os.makedirs(save_dir,exist_ok=True)
-    save_model = "/wanghuan/data/wangzefang/slim_VAR_copy/slimgpt_pub/sparsity_model"
+    save_model = "/home/wangzefang/edgevar/EdgeVAR/slimgpt_pub/output/sparsity_model"
     os.makedirs(save_model,exist_ok=True)
     save_path = os.path.join(save_model, args.model_name)
     torch.save(model.state_dict(), save_path)

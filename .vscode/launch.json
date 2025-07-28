@@ -66,6 +66,32 @@
                 "--sparsity","0.4"
 
             ]
+                },
+                {
+                    "name": "Debug torchrun train.py",
+                    "type": "debugpy",
+                    "request": "launch",
+                    "program": "/home/wangzefang/edgevar/EdgeVAR/VAR/train.py",
+                    "args": [
+                        "--nnodes=1",
+                        "--nproc_per_node=1",
+                        "--node_rank=0",
+                        "train.py",
+                        "--depth=16",
+                        "--bs=180",
+                        "--ep=20",
+                        "--fp16=1",
+                        "--alng=1e-3",
+                        "--wpe=0.1",
+                        "--sparsity=0.2",
+                        "--local_out_dir_path=/home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20",
+                        "--data_path=/home/wangzefang/Datasets/ImageNet-1K"
+                    ],
+                    "console": "integratedTerminal",
+                    "justMyCode": false,
+                    "env": {
+                        "CUDA_VISIBLE_DEVICES": "0"  // 可根据需要指定GPU
+                    }
                 }
     ]
 }

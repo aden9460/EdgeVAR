@@ -1,22 +1,22 @@
-echo "==> Training..."
+# echo "==> Training..."
 
 
-#!/bin/sh 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/conda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/conda/etc/profile.d/conda.sh" ]; then
-        . "/opt/conda/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/conda/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-conda activate slim
+# #!/bin/sh 
+# # >>> conda initialize >>>
+# # !! Contents within this block are managed by 'conda init' !!
+# __conda_setup="$('/opt/conda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#     eval "$__conda_setup"
+# else
+#     if [ -f "/opt/conda/etc/profile.d/conda.sh" ]; then
+#         . "/opt/conda/etc/profile.d/conda.sh"
+#     else
+#         export PATH="/opt/conda/bin:$PATH"
+#     fi
+# fi
+# unset __conda_setup
+# # <<< conda initialize <<<
+# conda activate slim
 
 # # 训练参数
 # TRAIN_SCRIPT="train.py"
@@ -50,12 +50,12 @@ conda activate slim
 
 
 
-torchrun  \
+CUDA_VISIBLE_DEVICES=1,2,3,4,5,6,7 torchrun  \
   --nnodes=1 \
-  --nproc_per_node=4 \
+  --nproc_per_node=7 \
   --node_rank=0 \
   train.py \
-  --depth=24 --bs=170 --ep=20 --fp16=1 --alng=1e-3 --wpe=0.1 --sparsity=0.2 --local_out_dir_path="/wanghuan/data/wangzefang/slim_VAR_copy/VAR/d20_0.2_0-20" --data_path="/wanghuan/data/wangzefang/ImageNet-1K/"
+  --depth=16 --bs=470 --ep=20 --fp16=1 --alng=1e-3 --wpe=0.1 --sparsity=0.2 --local_out_dir_path="/home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i" --data_path="/home/wangzefang/Datasets/ImageNet-1K"
 
 # torchrun \
 #   --nproc_per_node=6 \

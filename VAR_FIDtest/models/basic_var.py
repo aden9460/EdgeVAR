@@ -66,6 +66,11 @@ class SelfAttention(nn.Module):
         assert embed_dim % num_heads == 0
         self.block_idx, self.num_heads, self.head_dim = block_idx, num_heads, embed_dim // num_heads  # =64
         self.attn_l2_norm = attn_l2_norm
+
+        real_num_heads = round(num_heads*(1-args.sparsity))
+        self.num_heads = real_num_heads
+        inner_dim = self.num_heads*64
+        print(f"[SelfAttention] embed_dim: {embed_dim}, real_num_heads: {real_num_heads}")
         if self.attn_l2_norm:
             self.scale = 1
             self.scale_mul_1H11 = nn.Parameter(torch.full(size=(1, self.num_heads, 1, 1), fill_value=4.0).log(), requires_grad=True)
@@ -73,16 +78,16 @@ class SelfAttention(nn.Module):
         else:
             self.scale = 0.25 / math.sqrt(self.head_dim)
         
-        self.mat_qkv = nn.Linear(embed_dim, embed_dim * 3, bias=False)
-        self.q_bias, self.v_bias = nn.Parameter(torch.zeros(embed_dim)), nn.Parameter(torch.zeros(embed_dim))
-        self.register_buffer('zero_k_bias', torch.zeros(embed_dim))
+        self.mat_qkv = nn.Linear(embed_dim, inner_dim * 3, bias=False)
+        self.q_bias, self.v_bias = nn.Parameter(torch.zeros(inner_dim)), nn.Parameter(torch.zeros(inner_dim))
+        self.register_buffer('zero_k_bias', torch.zeros(inner_dim))
         
-        self.proj = nn.Linear(embed_dim, embed_dim)
+        self.proj = nn.Linear(inner_dim, embed_dim)
         self.proj_drop = nn.Dropout(proj_drop, inplace=True) if proj_drop > 0 else nn.Identity()
         self.attn_drop: float = attn_drop
         self.using_flash = flash_if_available and flash_attn_func is not None
         self.using_xform = flash_if_available and memory_efficient_attention is not None
-        self.register_buffer('pruned_indices', torch.zeros(640).int())
+        self.register_buffer('pruned_indices', torch.zeros(192).int())
 
         # only used during inference
         self.caching, self.cached_k, self.cached_v = False, None, None
@@ -94,7 +99,13 @@ class SelfAttention(nn.Module):
         B, L, C = x.shape
         
         # self.proj.weight.data[self.pruned_indices] = 0
-        self.proj.weight.data[:, self.pruned_indices] = 0
+        # print("attn被剪掉的长度为:",len(self.pruned_indices))
+        # print("attn的形状为:",self.proj.weight.data.shape)
+        # valid_indices = self.pruned_indices[self.pruned_indices < self.proj.weight.shape[1]]
+        # print("真实attn的长度为:",len(valid_indices))
+        # self.proj.weight.data[:, valid_indices] = 0
+        # self.proj.weight.data[:, self.pruned_indices] = 0
+
         qkv = F.linear(input=x, weight=self.mat_qkv.weight, bias=torch.cat((self.q_bias, self.zero_k_bias, self.v_bias))).view(B, L, 3, self.num_heads, self.head_dim)
         main_type = qkv.dtype
         # qkv: BL3Hc
@@ -119,7 +130,7 @@ class SelfAttention(nn.Module):
         elif self.using_xform:
             oup = memory_efficient_attention(q.to(dtype=main_type), k.to(dtype=main_type), v.to(dtype=main_type), attn_bias=None if attn_bias is None else attn_bias.to(dtype=main_type).expand(B, self.num_heads, -1, -1), p=dropout_p, scale=self.scale).view(B, L, C)
         else:
-            oup = slow_attn(query=q, key=k, value=v, scale=self.scale, attn_mask=attn_bias, dropout_p=dropout_p).transpose(1, 2).reshape(B, L, C)
+            oup = slow_attn(query=q, key=k, value=v, scale=self.scale, attn_mask=attn_bias, dropout_p=dropout_p).transpose(1, 2).reshape(B, L, self.num_heads * self.head_dim)
         
         return self.proj_drop(self.proj(oup))
         # attn = (q @ k.transpose(-2, -1)).add_(attn_bias + self.local_rpb())  # BHLc @ BHcL => BHLL

@@ -1,49 +1,51 @@
 nohup: ignoring input
-W0509 14:33:54.337637 140022990878528 torch/distributed/run.py:757] 
-W0509 14:33:54.337637 140022990878528 torch/distributed/run.py:757] *****************************************
-W0509 14:33:54.337637 140022990878528 torch/distributed/run.py:757] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
-W0509 14:33:54.337637 140022990878528 torch/distributed/run.py:757] *****************************************
+W0728 12:47:26.993877 140240809432128 torch/distributed/run.py:757] 
+W0728 12:47:26.993877 140240809432128 torch/distributed/run.py:757] *****************************************
+W0728 12:47:26.993877 140240809432128 torch/distributed/run.py:757] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0728 12:47:26.993877 140240809432128 torch/distributed/run.py:757] *****************************************
 [dist initialize] mp method=spawn
 [dist initialize] mp method=spawn
 [dist initialize] mp method=spawn
 [dist initialize] mp method=spawn
-[lrk=0, rk=0]
+[dist initialize] mp method=spawn
 [dist initialize] mp method=spawn
 [dist initialize] mp method=spawn
 [lrk=1, rk=1]
-[lrk=5, rk=5]
+[lrk=6, rk=6]
 [lrk=4, rk=4]
-[lrk=3, rk=3]
 [lrk=2, rk=2]
-[05-09 14:33:59] (AR/VAR/utils/arg_util.py, line 176)=> [tf32] [precis] torch.get_float32_matmul_precision(): high
-[05-09 14:33:59] (AR/VAR/utils/arg_util.py, line 177)=> [tf32] [ conv ] torch.backends.cudnn.allow_tf32: True
-[05-09 14:33:59] (AR/VAR/utils/arg_util.py, line 178)=> [tf32] [matmul] torch.backends.cuda.matmul.allow_tf32: True
-[05-09 14:33:59] (train.py                , line  41)=> global bs=18, local bs=3
-[05-09 14:33:59] (train.py                , line  42)=> initial args:
+[lrk=3, rk=3]
+[lrk=5, rk=5]
+[lrk=0, rk=0]
+[07-28 20:47:30] (AR/VAR/utils/arg_util.py, line 176)=> [tf32] [precis] torch.get_float32_matmul_precision(): high
+[07-28 20:47:30] (AR/VAR/utils/arg_util.py, line 177)=> [tf32] [ conv ] torch.backends.cudnn.allow_tf32: True
+[07-28 20:47:30] (AR/VAR/utils/arg_util.py, line 178)=> [tf32] [matmul] torch.backends.cuda.matmul.allow_tf32: True
+[07-28 20:47:30] (train.py                , line  41)=> global bs=469, local bs=67
+[07-28 20:47:30] (train.py                , line  42)=> initial args:
 {
-  data_path           : /datasets/liying/datasets/imagenet
+  data_path           : /home/wangzefang/Datasets/ImageNet-1K
   exp_name            : text
   vfast               : 0
   tfast               : 0
-  depth               : 24
-  sparsity            : 0.4
+  depth               : 16
+  sparsity            : 0.2
   ini                 : -1
   hd                  : 0.02
   aln                 : 0.5
   alng                : 0.001
   fp16                : 1
   tblr                : 0.0001
-  tlr                 : 7.031250000000001e-06
+  tlr                 : 0.00018320312500000002
   twd                 : 0.05
   twde                : 0.05
   tclip               : 2.0
   ls                  : 0.0
-  bs                  : 18
-  batch_size          : 3
-  glb_batch_size      : 18
+  bs                  : 469
+  batch_size          : 67
+  glb_batch_size      : 469
   ac                  : 1
-  ep                  : 10
-  wp                  : 0.2
+  ep                  : 20
+  wp                  : 0.4
   wp0                 : 0.005
   wpe                 : 0.1
   sche                : lin0
@@ -62,11 +64,11 @@ W0509 14:33:54.337637 140022990878528 torch/distributed/run.py:757] ************
   workers             : 0
   pg                  : 0.0
   pg0                 : 4
-  pgwp                : 0.03333333333333333
-  cmd                 : --depth=24 --bs=16 --ep=10 --fp16=1 --alng=1e-3 --wpe=0.1 --sparsity=0.4 --data_path=/datasets/liying/datasets/imagenet
+  pgwp                : 0.06666666666666667
+  cmd                 : --depth=16 --bs=470 --ep=20 --fp16=1 --alng=1e-3 --wpe=0.1 --sparsity=0.2 --local_out_dir_path=/home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i --data_path=/home/wangzefang/Datasets/ImageNet-1K
   branch              : main
-  commit_id           : 3f1029565306d1b471643e7c360294c8a0b2a8e4
-  commit_msg          : [upd] Third-party Usage and Research
+  commit_id           : 7f20a79b1faa2534c4cd8a4dea3fbb72fb0375d0
+  commit_msg          : Add external libraries as normal code
   acc_mean            : None
   acc_tail            : None
   L_mean              : None
@@ -82,10 +84,10 @@ W0509 14:33:54.337637 140022990878528 torch/distributed/run.py:757] ************
   cur_ep              : 
   remain_time         : 
   finish_time         : 
-  local_out_dir_path  : /projects/wangzefang/project/slim_VAR/VAR/local_output
-  tb_log_dir_path     : /projects/wangzefang/project/slim_VAR/VAR/local_output/tb-VARd24__pn1_2_3_4_5_6_8_10_13_16__b18ep10adamlr0.0001wd0.05
-  log_txt_path        : /projects/wangzefang/project/slim_VAR/VAR/local_output/log.txt
-  last_ckpt_path      : /projects/wangzefang/project/slim_VAR/VAR/local_output/ar-ckpt-last.pth
+  local_out_dir_path  : /home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i
+  tb_log_dir_path     : /home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i/tb-VARd16__pn1_2_3_4_5_6_8_10_13_16__b469ep20adamlr0.0001wd0.05
+  log_txt_path        : /home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i/log.txt
+  last_ckpt_path      : /home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i/ar-ckpt-last.pth
   tf32                : True
   seed                : None
   transfer            : False
@@ -94,40 +96,40 @@ W0509 14:33:54.337637 140022990878528 torch/distributed/run.py:757] ************
   dbg_nan             : False
 }
 
-[05-09 14:33:59] (train.py                , line  46)=> [build PT data] ...
+[07-28 20:47:30] (train.py                , line  46)=> [build PT data] ...
 
-[05-09 14:34:02] (im_VAR/VAR/utils/data.py, line  34)=> [Dataset] len(train_set)=1281167, len(val_set)=50000, num_classes=1000
-[05-09 14:34:02] (im_VAR/VAR/utils/data.py, line  48)=> Transform [train] = 
-[05-09 14:34:02] (im_VAR/VAR/utils/data.py, line  51)=> Resize(size=288, interpolation=lanczos, max_size=None, antialias=True)
-[05-09 14:34:02] (im_VAR/VAR/utils/data.py, line  51)=> RandomCrop(size=(256, 256), padding=None)
-[05-09 14:34:02] (im_VAR/VAR/utils/data.py, line  51)=> ToTensor()
-[05-09 14:34:02] (im_VAR/VAR/utils/data.py, line  51)=> <function normalize_01_into_pm1 at 0x7f9a986611f0>
-[05-09 14:34:02] (im_VAR/VAR/utils/data.py, line  54)=> ---------------------------
+[07-28 20:47:33] (dgeVAR/VAR/utils/data.py, line  34)=> [Dataset] len(train_set)=1281167, len(val_set)=50000, num_classes=1000
+[07-28 20:47:33] (dgeVAR/VAR/utils/data.py, line  48)=> Transform [train] = 
+[07-28 20:47:33] (dgeVAR/VAR/utils/data.py, line  51)=> Resize(size=288, interpolation=lanczos, max_size=None, antialias=True)
+[07-28 20:47:33] (dgeVAR/VAR/utils/data.py, line  51)=> RandomCrop(size=(256, 256), padding=None)
+[07-28 20:47:33] (dgeVAR/VAR/utils/data.py, line  51)=> ToTensor()
+[07-28 20:47:33] (dgeVAR/VAR/utils/data.py, line  51)=> <function normalize_01_into_pm1 at 0x7f69505d41f0>
+[07-28 20:47:33] (dgeVAR/VAR/utils/data.py, line  54)=> ---------------------------
 
-[05-09 14:34:02] (im_VAR/VAR/utils/data.py, line  48)=> Transform [val] = 
-[05-09 14:34:02] (im_VAR/VAR/utils/data.py, line  51)=> Resize(size=288, interpolation=lanczos, max_size=None, antialias=True)
-[05-09 14:34:02] (im_VAR/VAR/utils/data.py, line  51)=> CenterCrop(size=(256, 256))
-[05-09 14:34:02] (im_VAR/VAR/utils/data.py, line  51)=> ToTensor()
-[05-09 14:34:02] (im_VAR/VAR/utils/data.py, line  51)=> <function normalize_01_into_pm1 at 0x7f9a986611f0>
-[05-09 14:34:02] (im_VAR/VAR/utils/data.py, line  54)=> ---------------------------
+[07-28 20:47:33] (dgeVAR/VAR/utils/data.py, line  48)=> Transform [val] = 
+[07-28 20:47:33] (dgeVAR/VAR/utils/data.py, line  51)=> Resize(size=288, interpolation=lanczos, max_size=None, antialias=True)
+[07-28 20:47:33] (dgeVAR/VAR/utils/data.py, line  51)=> CenterCrop(size=(256, 256))
+[07-28 20:47:33] (dgeVAR/VAR/utils/data.py, line  51)=> ToTensor()
+[07-28 20:47:33] (dgeVAR/VAR/utils/data.py, line  51)=> <function normalize_01_into_pm1 at 0x7f69505d41f0>
+[07-28 20:47:33] (dgeVAR/VAR/utils/data.py, line  54)=> ---------------------------
 
-[05-09 14:34:02] (train.py                , line  69)=> [auto_resume] no ckpt found @ /projects/wangzefang/project/slim_VAR/VAR/local_output/ar-ckpt*.pth
-[05-09 14:34:02] (train.py                , line  69)=> [auto_resume quit]
-[05-09 14:34:02] (train.py                , line  70)=> [dataloader multi processing] ...     [dataloader multi processing](*) finished! (0.00s)
-[05-09 14:34:02] (train.py                , line  76)=> [dataloader] gbs=18, lbs=3, iters_train=71176, types(tr, va)=('DatasetFolder', 'DatasetFolder')
-[05-09 14:34:03] (im_VAR/VAR/models/var.py, line 102)=> 
-[constructor]  ==== flash_if_available=True (0/24), fused_if_available=True (fusing_add_ln=0/24, fusing_mlp=0/24) ==== 
-    [VAR config ] embed_dim=1536, num_heads=24, depth=24, mlp_ratio=4.0
-    [drop ratios ] drop_rate=0.0, attn_drop_rate=0.0, drop_path_rate=0.1 (tensor([0.0000, 0.0043, 0.0087, 0.0130, 0.0174, 0.0217, 0.0261, 0.0304, 0.0348,
-        0.0391, 0.0435, 0.0478, 0.0522, 0.0565, 0.0609, 0.0652, 0.0696, 0.0739,
-        0.0783, 0.0826, 0.0870, 0.0913, 0.0957, 0.1000]))
+[07-28 20:47:33] (train.py                , line  69)=> [auto_resume] no ckpt found @ /home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i/ar-ckpt*.pth
+[07-28 20:47:33] (train.py                , line  69)=> [auto_resume quit]
+[07-28 20:47:33] (train.py                , line  70)=> [dataloader multi processing] ...     [dataloader multi processing](*) finished! (0.00s)
+[07-28 20:47:33] (train.py                , line  76)=> [dataloader] gbs=469, lbs=67, iters_train=2732, types(tr, va)=('DatasetFolder', 'DatasetFolder')
+[07-28 20:47:33] (dgeVAR/VAR/models/var.py, line 102)=> 
+[constructor]  ==== flash_if_available=True (0/16), fused_if_available=True (fusing_add_ln=0/16, fusing_mlp=0/16) ==== 
+    [VAR config ] embed_dim=1024, num_heads=16, depth=16, mlp_ratio=4.0
+    [drop ratios ] drop_rate=0.0, attn_drop_rate=0.0, drop_path_rate=0.0666667 (tensor([0.0000, 0.0044, 0.0089, 0.0133, 0.0178, 0.0222, 0.0267, 0.0311, 0.0356,
+        0.0400, 0.0444, 0.0489, 0.0533, 0.0578, 0.0622, 0.0667]))
 
-[05-09 14:34:05] (im_VAR/VAR/models/var.py, line 259)=> [init_weights] VAR with init_std=0.0147314
-[05-09 14:34:12] (train.py                , line 110)=> [INIT] VAR model = VAR(
-  drop_path_rate=0.1
-  (word_embed): Linear(in_features=32, out_features=1536, bias=True)
-  (class_emb): Embedding(1001, 1536)
-  (lvl_embed): Embedding(10, 1536)
+[07-28 20:47:33] (dgeVAR/VAR/models/var.py, line 259)=> [init_weights] VAR with init_std=0.0180422
+[07-28 20:47:34] (train.py                , line 108)=> 加载原始模型权重...
+[07-28 20:47:34] (train.py                , line 124)=> [INIT] VAR model = VAR(
+  drop_path_rate=0.0666667
+  (word_embed): Linear(in_features=32, out_features=1024, bias=True)
+  (class_emb): Embedding(1001, 1024)
+  (lvl_embed): Embedding(10, 1024)
   (shared_ada_lin): Identity()
   (blocks): ModuleList(
     (0): AdaLNSelfAttn(
@@ -135,62 +137,62 @@ W0509 14:33:54.337637 140022990878528 torch/distributed/run.py:757] ************
       (drop_path): Identity()
       (attn): SelfAttention(
         using_flash=False, using_xform=False, attn_l2_norm=True
-        (mat_qkv): Linear(in_features=1536, out_features=2688, bias=False)
-        (proj): Linear(in_features=896, out_features=1536, bias=True)
+        (mat_qkv): Linear(in_features=1024, out_features=2496, bias=False)
+        (proj): Linear(in_features=832, out_features=1024, bias=True)
         (proj_drop): Identity()
       )
       (ffn): FFN(
         fused_mlp_func=False
-        (fc1): Linear(in_features=1536, out_features=3686, bias=True)
+        (fc1): Linear(in_features=1024, out_features=3277, bias=True)
         (act): GELU(approximate='tanh')
-        (fc2): Linear(in_features=3686, out_features=1536, bias=True)
+        (fc2): Linear(in_features=3277, out_features=1024, bias=True)
         (drop): Identity()
       )
-      (ln_wo_grad): LayerNorm((1536,), eps=1e-06, elementwise_affine=False)
+      (ln_wo_grad): LayerNorm((1024,), eps=1e-06, elementwise_affine=False)
       (ada_lin): Sequential(
         (0): SiLU()
-        (1): Linear(in_features=1536, out_features=9216, bias=True)
+        (1): Linear(in_features=1024, out_features=6144, bias=True)
       )
     )
-    (1-23): 23 x AdaLNSelfAttn(
+    (1-15): 15 x AdaLNSelfAttn(
       shared_aln=False
       (drop_path): DropPath((drop_prob=...))
       (attn): SelfAttention(
         using_flash=False, using_xform=False, attn_l2_norm=True
-        (mat_qkv): Linear(in_features=1536, out_features=2688, bias=False)
-        (proj): Linear(in_features=896, out_features=1536, bias=True)
+        (mat_qkv): Linear(in_features=1024, out_features=2496, bias=False)
+        (proj): Linear(in_features=832, out_features=1024, bias=True)
         (proj_drop): Identity()
       )
       (ffn): FFN(
         fused_mlp_func=False
-        (fc1): Linear(in_features=1536, out_features=3686, bias=True)
+        (fc1): Linear(in_features=1024, out_features=3277, bias=True)
         (act): GELU(approximate='tanh')
-        (fc2): Linear(in_features=3686, out_features=1536, bias=True)
+        (fc2): Linear(in_features=3277, out_features=1024, bias=True)
         (drop): Identity()
       )
-      (ln_wo_grad): LayerNorm((1536,), eps=1e-06, elementwise_affine=False)
+      (ln_wo_grad): LayerNorm((1024,), eps=1e-06, elementwise_affine=False)
       (ada_lin): Sequential(
         (0): SiLU()
-        (1): Linear(in_features=1536, out_features=9216, bias=True)
+        (1): Linear(in_features=1024, out_features=6144, bias=True)
       )
     )
   )
   (head_nm): AdaLNBeforeHead(
-    (ln_wo_grad): LayerNorm((1536,), eps=1e-06, elementwise_affine=False)
+    (ln_wo_grad): LayerNorm((1024,), eps=1e-06, elementwise_affine=False)
     (ada_lin): Sequential(
       (0): SiLU()
-      (1): Linear(in_features=1536, out_features=3072, bias=True)
+      (1): Linear(in_features=1024, out_features=2048, bias=True)
     )
   )
-  (head): Linear(in_features=1536, out_features=4096, bias=True)
+  (head): Linear(in_features=1024, out_features=4096, bias=True)
 )
 
 
-[05-09 14:34:12] (train.py                , line 112)=> [INIT][#para] VAE=108.95, VAE.enc=44.11, VAE.dec=64.65, VAE.quant=0.17
-[05-09 14:34:12] (train.py                , line 113)=> [INIT][#para] VAR=757.71
+[07-28 20:47:34] (train.py                , line 126)=> [INIT][#para] VAE=108.95, VAE.enc=44.11, VAE.dec=64.65, VAE.quant=0.17
+[07-28 20:47:34] (train.py                , line 127)=> [INIT][#para] VAR=270.84
 
 
-[05-09 14:34:12] (/VAR/utils/lr_control.py, line  99)=> [get_param_groups] param_groups = 
+[07-28 20:47:34] (/VAR/utils/lr_control.py, line  99)=> [get_param_groups] param_groups = 
 { 'D': { 'lr_sc': 1.0,
          'params': "('word_embed.weight, class_emb.weight, blocks.0.attn.mat_qkv.weight, blocks.0.attn.proj.weight, blocks.0.ffn.fc1.weight, blocks.0.ffn.fc2.weight, blocks.0.ada_lin.1.weight, '\n"
                    " 'blocks.1.attn.mat_qkv.weight, blocks.1.attn.proj.weight, blocks.1.ffn.fc1.weight, blocks.1.ffn.fc2.weight, blocks.1.ada_lin.1.weight, blocks.2.attn.mat_qkv.weight, blocks.2.attn.proj.weight, '\n"
@@ -204,12 +206,6 @@ W0509 14:33:54.337637 140022990878528 torch/distributed/run.py:757] ************
                    " 'blocks.12.attn.mat_qkv.weight, blocks.12.attn.proj.weight, blocks.12.ffn.fc1.weight, blocks.12.ffn.fc2.weight, blocks.12.ada_lin.1.weight, blocks.13.attn.mat_qkv.weight, '\n"
                    " 'blocks.13.attn.proj.weight, blocks.13.ffn.fc1.weight, blocks.13.ffn.fc2.weight, blocks.13.ada_lin.1.weight, blocks.14.attn.mat_qkv.weight, blocks.14.attn.proj.weight, blocks.14.ffn.fc1.weight, '\n"
                    " 'blocks.14.ffn.fc2.weight, blocks.14.ada_lin.1.weight, blocks.15.attn.mat_qkv.weight, blocks.15.attn.proj.weight, blocks.15.ffn.fc1.weight, blocks.15.ffn.fc2.weight, blocks.15.ada_lin.1.weight, '\n"
-                   " 'blocks.16.attn.mat_qkv.weight, blocks.16.attn.proj.weight, blocks.16.ffn.fc1.weight, blocks.16.ffn.fc2.weight, blocks.16.ada_lin.1.weight, blocks.17.attn.mat_qkv.weight, '\n"
-                   " 'blocks.17.attn.proj.weight, blocks.17.ffn.fc1.weight, blocks.17.ffn.fc2.weight, blocks.17.ada_lin.1.weight, blocks.18.attn.mat_qkv.weight, blocks.18.attn.proj.weight, blocks.18.ffn.fc1.weight, '\n"
-                   " 'blocks.18.ffn.fc2.weight, blocks.18.ada_lin.1.weight, blocks.19.attn.mat_qkv.weight, blocks.19.attn.proj.weight, blocks.19.ffn.fc1.weight, blocks.19.ffn.fc2.weight, blocks.19.ada_lin.1.weight, '\n"
-                   " 'blocks.20.attn.mat_qkv.weight, blocks.20.attn.proj.weight, blocks.20.ffn.fc1.weight, blocks.20.ffn.fc2.weight, blocks.20.ada_lin.1.weight, blocks.21.attn.mat_qkv.weight, '\n"
-                   " 'blocks.21.attn.proj.weight, blocks.21.ffn.fc1.weight, blocks.21.ffn.fc2.weight, blocks.21.ada_lin.1.weight, blocks.22.attn.mat_qkv.weight, blocks.22.attn.proj.weight, blocks.22.ffn.fc1.weight, '\n"
-                   " 'blocks.22.ffn.fc2.weight, blocks.22.ada_lin.1.weight, blocks.23.attn.mat_qkv.weight, blocks.23.attn.proj.weight, blocks.23.ffn.fc1.weight, blocks.23.ffn.fc2.weight, blocks.23.ada_lin.1.weight, '\n"
                    " 'head_nm.ada_lin.1.weight, head.weight')",
          'wd_sc': 1.0},
   'ND': { 'lr_sc': 1.0,
@@ -229,26 +225,17 @@ W0509 14:33:54.337637 140022990878528 torch/distributed/run.py:757] ************
                     " 'blocks.13.attn.scale_mul_1H11, blocks.13.attn.q_bias, blocks.13.attn.v_bias, blocks.13.attn.proj.bias, blocks.13.ffn.fc1.bias, blocks.13.ffn.fc2.bias, blocks.13.ada_lin.1.bias, '\n"
                     " 'blocks.14.attn.scale_mul_1H11, blocks.14.attn.q_bias, blocks.14.attn.v_bias, blocks.14.attn.proj.bias, blocks.14.ffn.fc1.bias, blocks.14.ffn.fc2.bias, blocks.14.ada_lin.1.bias, '\n"
                     " 'blocks.15.attn.scale_mul_1H11, blocks.15.attn.q_bias, blocks.15.attn.v_bias, blocks.15.attn.proj.bias, blocks.15.ffn.fc1.bias, blocks.15.ffn.fc2.bias, blocks.15.ada_lin.1.bias, '\n"
-                    " 'blocks.16.attn.scale_mul_1H11, blocks.16.attn.q_bias, blocks.16.attn.v_bias, blocks.16.attn.proj.bias, blocks.16.ffn.fc1.bias, blocks.16.ffn.fc2.bias, blocks.16.ada_lin.1.bias, '\n"
-                    " 'blocks.17.attn.scale_mul_1H11, blocks.17.attn.q_bias, blocks.17.attn.v_bias, blocks.17.attn.proj.bias, blocks.17.ffn.fc1.bias, blocks.17.ffn.fc2.bias, blocks.17.ada_lin.1.bias, '\n"
-                    " 'blocks.18.attn.scale_mul_1H11, blocks.18.attn.q_bias, blocks.18.attn.v_bias, blocks.18.attn.proj.bias, blocks.18.ffn.fc1.bias, blocks.18.ffn.fc2.bias, blocks.18.ada_lin.1.bias, '\n"
-                    " 'blocks.19.attn.scale_mul_1H11, blocks.19.attn.q_bias, blocks.19.attn.v_bias, blocks.19.attn.proj.bias, blocks.19.ffn.fc1.bias, blocks.19.ffn.fc2.bias, blocks.19.ada_lin.1.bias, '\n"
-                    " 'blocks.20.attn.scale_mul_1H11, blocks.20.attn.q_bias, blocks.20.attn.v_bias, blocks.20.attn.proj.bias, blocks.20.ffn.fc1.bias, blocks.20.ffn.fc2.bias, blocks.20.ada_lin.1.bias, '\n"
-                    " 'blocks.21.attn.scale_mul_1H11, blocks.21.attn.q_bias, blocks.21.attn.v_bias, blocks.21.attn.proj.bias, blocks.21.ffn.fc1.bias, blocks.21.ffn.fc2.bias, blocks.21.ada_lin.1.bias, '\n"
-                    " 'blocks.22.attn.scale_mul_1H11, blocks.22.attn.q_bias, blocks.22.attn.v_bias, blocks.22.attn.proj.bias, blocks.22.ffn.fc1.bias, blocks.22.ffn.fc2.bias, blocks.22.ada_lin.1.bias, '\n"
-                    " 'blocks.23.attn.scale_mul_1H11, blocks.23.attn.q_bias, blocks.23.attn.v_bias, blocks.23.attn.proj.bias, blocks.23.ffn.fc1.bias, blocks.23.ffn.fc2.bias, blocks.23.ada_lin.1.bias, '\n"
                     " 'head_nm.ada_lin.1.bias, head.bias')",
           'wd_sc': 0.0}}
 
-[05-09 14:34:12] (/VAR/utils/lr_control.py, line 104)=> [get_param_groups][rank0] type(model).__name__='VAR' count=298, numel=757714144
-[05-09 14:34:12] (/VAR/utils/lr_control.py, line 104)=> [get_param_groups][rank1] type(model).__name__='VAR' count=298, numel=757714144
-[05-09 14:34:12] (/VAR/utils/lr_control.py, line 104)=> [get_param_groups][rank2] type(model).__name__='VAR' count=298, numel=757714144
-[05-09 14:34:12] (/VAR/utils/lr_control.py, line 104)=> [get_param_groups][rank3] type(model).__name__='VAR' count=298, numel=757714144
-[05-09 14:34:12] (/VAR/utils/lr_control.py, line 104)=> [get_param_groups][rank4] type(model).__name__='VAR' count=298, numel=757714144
-[05-09 14:34:12] (/VAR/utils/lr_control.py, line 105)=> 
-[05-09 14:34:12] (train.py                , line 128)=> [INIT] optim=functools.partial(<class 'torch.optim.adamw.AdamW'>, betas=(0.9, 0.95), fused=True), opt_kw={'lr': 7.031250000000001e-06, 'weight_decay': 0}
+[07-28 20:47:36] (/VAR/utils/lr_control.py, line 104)=> [get_param_groups][rank0] type(model).__name__='VAR' count=202, numel=270844320
+[07-28 20:47:36] (/VAR/utils/lr_control.py, line 104)=> [get_param_groups][rank1] type(model).__name__='VAR' count=202, numel=270844320
+[07-28 20:47:36] (/VAR/utils/lr_control.py, line 104)=> [get_param_groups][rank2] type(model).__name__='VAR' count=202, numel=270844320
+[07-28 20:47:36] (/VAR/utils/lr_control.py, line 104)=> [get_param_groups][rank3] type(model).__name__='VAR' count=202, numel=270844320
+[07-28 20:47:36] (/VAR/utils/lr_control.py, line 104)=> [get_param_groups][rank4] type(model).__name__='VAR' count=202, numel=270844320
+[07-28 20:47:36] (/VAR/utils/lr_control.py, line 104)=> [get_param_groups][rank5] type(model).__name__='VAR' count=202, numel=270844320
+[07-28 20:47:36] (/VAR/utils/lr_control.py, line 105)=> 
+[07-28 20:47:36] (train.py                , line 142)=> [INIT] optim=functools.partial(<class 'torch.optim.adamw.AdamW'>, betas=(0.9, 0.95), fused=True), opt_kw={'lr': 0.00018320312500000002, 'weight_decay': 0}
 
-[05-09 14:34:12] (/VAR/utils/lr_control.py, line 104)=> [get_param_groups][rank5] type(model).__name__='VAR' count=298, numel=757714144
-[05-09 14:34:14] (im_VAR/VAR/utils/misc.py, line 314)=> [Ep]: [   0/10]  [    0/71176]  eta: 2 days, 4:13:58  tlr: 3.5e-08  tnm: 49.68  Lm: 13.394 (13.394)  Lt: 13.535 (13.535)  Accm: 0.00 (0.00)  Acct: 0.00 (0.00)  time: 2.6419  data: 0.0340
-[05-09 15:23:56] (im_VAR/VAR/utils/misc.py, line 314)=> [Ep]: [   0/10]  [ 2454/71176]  eta: 23:12:16  tlr: 1.2e-06  tnm: 1.49  Lm: 10.716 (10.716)  Lt: 10.840 (10.840)  Accm: 0.12 (0.12)  Acct: 0.00 (0.00)  time: 1.2147  data: 0.0228
-[05-09 16:13:35] (im_VAR/VAR/utils/misc.py, line 314)=> [Ep]: [   0/10]  [ 4908/71176]  eta: 22:21:40  tlr: 2.4e-06  tnm: 1.26  Lm: 8.038 (9.770)  Lt: 8.144 (9.886)  Accm: 0.25 (0.16)  Acct: 0.00 (0.09)  time: 1.2141  data: 0.0182
+[07-28 20:47:36] (/VAR/utils/lr_control.py, line 104)=> [get_param_groups][rank6] type(model).__name__='VAR' count=202, numel=270844320
+[07-28 20:47:43] (dgeVAR/VAR/utils/misc.py, line 314)=> [Ep]: [   0/20]  [   0/2732]  eta: 5:18:38  tlr: 9.2e-07  tnm: 73.32  Lm: 16.737 (16.737)  Lt: 15.368 (15.368)  Accm: 0.03 (0.03)  Acct: 0.03 (0.03)  time: 6.9980  data: 0.5484
