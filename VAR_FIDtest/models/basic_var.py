@@ -70,7 +70,7 @@ class SelfAttention(nn.Module):
         real_num_heads = round(num_heads*(1-args.sparsity))
         self.num_heads = real_num_heads
         inner_dim = self.num_heads*64
-        print(f"[SelfAttention] embed_dim: {embed_dim}, real_num_heads: {real_num_heads}")
+        # print(f"[SelfAttention] embed_dim: {embed_dim}, real_num_heads: {real_num_heads}")
         if self.attn_l2_norm:
             self.scale = 1
             self.scale_mul_1H11 = nn.Parameter(torch.full(size=(1, self.num_heads, 1, 1), fill_value=4.0).log(), requires_grad=True)

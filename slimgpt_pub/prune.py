@@ -96,85 +96,85 @@ def check_sparsity(model):
 #     return model, tokenizer
 
 
-class Catcher(nn.Module):
-    def __init__(self, seqlen, hidden_size, num_samples, batch_samples, cache_dev='cpu', dtype=torch.bfloat16):
-        super().__init__()
-        self.layer_inputs = torch.zeros(
-            (num_samples, seqlen, hidden_size), 
-            dtype=dtype, device=cache_dev
-        )
-        if cache_dev == 'cpu':
-            self.batch_inputs = torch.zeros(
-                (batch_samples, seqlen, hidden_size), 
-                dtype=dtype, device='cuda'
-            )
-        self.batch_samples = batch_samples
-        self.row_idx = 0
-        self.batch_idx = 0
-        self.attention_mask = None
-        self.cache_dev = cache_dev
+# class Catcher(nn.Module):
+#     def __init__(self, seqlen, hidden_size, num_samples, batch_samples, cache_dev='cpu', dtype=torch.bfloat16):
+#         super().__init__()
+#         self.layer_inputs = torch.zeros(
+#             (num_samples, seqlen, hidden_size), 
+#             dtype=dtype, device=cache_dev
+#         )
+#         if cache_dev == 'cpu':
+#             self.batch_inputs = torch.zeros(
+#                 (batch_samples, seqlen, hidden_size), 
+#                 dtype=dtype, device='cuda'
+#             )
+#         self.batch_samples = batch_samples
+#         self.row_idx = 0
+#         self.batch_idx = 0
+#         self.attention_mask = None
+#         self.cache_dev = cache_dev
 
-    def forward(self, inputs, **kwargs):
-        if self.cache_dev == 'cpu':
-            self.batch_inputs[self.row_idx] = inputs
-            self.row_idx += 1
-            if self.row_idx == self.batch_samples:
-                self.layer_inputs[self.batch_idx: self.batch_idx + self.batch_samples] = self.batch_inputs.to(self.cache_dev)
-                self.row_idx = 0
-                self.batch_idx += 1
-        else:
-            self.layer_inputs[self.row_idx] = inputs
-            self.row_idx += 1            
+#     def forward(self, inputs, **kwargs):
+#         if self.cache_dev == 'cpu':
+#             self.batch_inputs[self.row_idx] = inputs
+#             self.row_idx += 1
+#             if self.row_idx == self.batch_samples:
+#                 self.layer_inputs[self.batch_idx: self.batch_idx + self.batch_samples] = self.batch_inputs.to(self.cache_dev)
+#                 self.row_idx = 0
+#                 self.batch_idx += 1
+#         else:
+#             self.layer_inputs[self.row_idx] = inputs
+#             self.row_idx += 1            
 
-        if self.attention_mask is None and kwargs["attention_mask"] is not None:
-            self.attention_mask = kwargs["attention_mask"]
+#         if self.attention_mask is None and kwargs["attention_mask"] is not None:
+#             self.attention_mask = kwargs["attention_mask"]
 
-        raise ValueError
+#         raise ValueError
 
 
-def prepare_calibration_input(args, model, dataloader, device="cuda"):
-    use_cache = model.config.use_cache
-    model.config.use_cache = False
-    layers = model.model.layers
+# def prepare_calibration_input(args, model, dataloader, device="cuda"):
+#     use_cache = model.config.use_cache
+#     model.config.use_cache = False
+#     layers = model.model.layers
 
-    if "model.embed_tokens" in model.hf_device_map:
-        device = model.hf_device_map["model.embed_tokens"]
+#     if "model.embed_tokens" in model.hf_device_map:
+#         device = model.hf_device_map["model.embed_tokens"]
 
-    dtype = next(iter(model.parameters())).dtype
-    inps = torch.zeros(
-        (args.num_samples, model.seqlen, model.config.hidden_size),
-        dtype=dtype,
-        device=device,
-    )
-    inps.requires_grad = False
-    cache = {"i": 0, "attention_mask": None, "position_ids": None}
+#     dtype = next(iter(model.parameters())).dtype
+#     inps = torch.zeros(
+#         (args.num_samples, model.seqlen, model.config.hidden_size),
+#         dtype=dtype,
+#         device=device,
+#     )
+#     inps.requires_grad = False
+#     cache = {"i": 0, "attention_mask": None, "position_ids": None}
 
-    class Catcher(nn.Module):
-        def __init__(self, module):
-            super().__init__()
-            self.module = module
+#     class Catcher(nn.Module):
+#         def __init__(self, module):
+#             super().__init__()
+#             self.module = module
 
-        def forward(self, inp, **kwargs):
-            inps[cache["i"]] = inp
-            cache["i"] += 1
-            cache["attention_mask"] = kwargs["attention_mask"]
-            cache["position_ids"] = kwargs["position_ids"]
-            raise ValueError
+#         def forward(self, inp, **kwargs):
+#             inps[cache["i"]] = inp
+#             cache["i"] += 1
+#             cache["attention_mask"] = kwargs["attention_mask"]
+#             cache["position_ids"] = kwargs["position_ids"]
+#             raise ValueError
 
-    layers[0] = Catcher(layers[0])
-    for batch in dataloader:
-        try:
-            model(batch[0].to(device))
-        except ValueError:
-            pass
-    layers[0] = layers[0].module
+#     layers[0] = Catcher(layers[0])
+#     for batch in dataloader:
+#         try:
+#             model(batch[0].to(device))
+#         except ValueError:
+#             pass
+#     layers[0] = layers[0].module
 
-    outs = torch.zeros_like(inps)
-    attention_mask = cache["attention_mask"]
-    position_ids = cache["position_ids"]
-    model.config.use_cache = use_cache
+#     outs = torch.zeros_like(inps)
+#     attention_mask = cache["attention_mask"]
+#     position_ids = cache["position_ids"]
+#     model.config.use_cache = use_cache
 
-    return inps, outs, attention_mask, position_ids
+#     return inps, outs, attention_mask, position_ids
 
 
 def prepare_calibration_d16_last_input(args, model, dataloader,device):
@@ -384,13 +384,13 @@ def model_slimming(model, dataloader, args):
                         model.blocks[i].attn.scale_mul_1H11 = nn.Parameter(
                         torch.full(size=(1, model.blocks[i].attn.num_heads, 1, 1),fill_value=4.0,device='cuda').log(),requires_grad=True)
                         target_layer_b = get_module_by_name(model.blocks[i], "attn.mat_qkv")
-                        tp.prune_linear_in_channels(target_layer, idx)
-                        tp.prune_linear_out_channels(target_layer_b,proj_qkv ) 
+                        tp.prune_linear_in_channels(target_layer, idx) #proj的inchannel
+                        tp.prune_linear_out_channels(target_layer_b,proj_qkv ) #mat_qkv的outchannel
             del pruner_dict   
-            print(model.blocks[i].ffn.fc1.weight.shape)
-            print(model.blocks[i].ffn.fc2.weight.shape)
-            print(model.blocks[i].attn.mat_qkv.weight.shape)
-            print(model.blocks[i].attn.proj.weight.shape)
+            # print(model.blocks[i].ffn.fc1.weight.shape)
+            # print(model.blocks[i].ffn.fc2.weight.shape)
+            # print(model.blocks[i].attn.mat_qkv.weight.shape)
+            # print(model.blocks[i].attn.proj.weight.shape)
             # print(model)
             for b in model.blocks: b.attn.kv_caching(True)                    
             if args.cache_dev == 'cuda':
@@ -413,12 +413,14 @@ def model_slimming(model, dataloader, args):
     return model
     
 
-MODEL_DEPTH =  16   # TODO: =====> please specify MODEL_DEPTH <=====
-assert MODEL_DEPTH in {12,16, 20, 24, 30}
+
 
 def main(args):
     print('load model...')
     # model, tokenizer = get_model(args.model_path)
+
+    MODEL_DEPTH =  args.maxlayer   # TODO: =====> please specify MODEL_DEPTH <=====
+    assert MODEL_DEPTH in {12,16, 20, 24, 30}
 
     hf_home = 'https://huggingface.co/FoundationVision/var/resolve/main'
     vae_ckpt, var_ckpt = '/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_VAR/model_zoo/vae_ch160v4096z32.pth', f'/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_VAR/model_zoo/var_d{MODEL_DEPTH}.pth'

@@ -45,6 +45,7 @@ class Args(Tap):
     twde: float = 0         # final wd, =twde or twd
     tclip: float = 2.       # <=0 for not using grad clip
     ls: float = 0.0         # label smooth
+    maxlayer: int = 16      #total transformer layer in VAR
     
     bs: int = 768           # global batch size
     batch_size: int = 0     # [automatically set; don't specify this] batch size per GPU = round(args.bs / args.ac / dist.get_world_size() / 8) * 8

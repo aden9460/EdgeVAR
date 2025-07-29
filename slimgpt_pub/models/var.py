@@ -167,7 +167,7 @@ class VAR(nn.Module):
         random.seed(seed)
         np.random.seed(seed)
         g_seed = seed
-        print("yesssss")
+        # print("yesssss")
         if g_seed is None: rng = None
         else: self.rng.manual_seed(g_seed); rng = self.rng
         

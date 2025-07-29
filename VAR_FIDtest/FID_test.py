@@ -9,12 +9,15 @@ setattr(torch.nn.Linear, 'reset_parameters', lambda self: None)     # disable de
 setattr(torch.nn.LayerNorm, 'reset_parameters', lambda self: None)  # disable default parameter init for faster speed
 from models import VQVAE, build_vae_var
 from torchvision.utils import save_image
-MODEL_DEPTH = 16    # TODO: =====> please specify MODEL_DEPTH <=====
-assert MODEL_DEPTH in {16, 20, 24, 30}
+# MODEL_DEPTH = 16    # TODO: =====> please specify MODEL_DEPTH <=====
+# assert MODEL_DEPTH in {16, 20, 24, 30}
 from utils import arg_util, misc
 from tqdm import tqdm
 
 args: arg_util.Args = arg_util.init_dist_and_get_args()
+
+MODEL_DEPTH =  args.depth   # TODO: =====> please specify MODEL_DEPTH <=====
+assert MODEL_DEPTH in {12,16, 20, 24, 30}
 # download checkpoint
 hf_home = 'https://huggingface.co/FoundationVision/var/resolve/main'
 # vae_ckpt, var_ckpt = '/wanghuan/data/wangzefang/slim_VAR_copy/VAR/model_zoo/vae_ch160v4096z32.pth', f'/wanghuan/data/wangzefang/slim_VAR_copy/VAR/model_zoo/var_d{MODEL_DEPTH}.pth'

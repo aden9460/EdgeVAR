@@ -1,7 +1,7 @@
 from torch_fidelity import calculate_metrics
 
 metrics = calculate_metrics(
-    input1='/home/wangzefang/edgevar/EdgeVAR/VAR_FIDtest/output/FID_test/d16_0.2_uniform_20i_0epoch_rightprune',
+    input1='/home/wangzefang/edgevar/EdgeVAR/VAR_FIDtest/output/FID_test/d24_0.2sparsity_150i_256eva_scale.pth',
     input2='/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_VAR/virtual_images',
     cuda=True,  # 如果要用GPU，改为True
     fid=True,
