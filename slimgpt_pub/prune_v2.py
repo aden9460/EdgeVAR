@@ -12,7 +12,8 @@ from slim_utils.slim_dataset import get_loaders
 from slim_utils.params_remove import LLaMAParamsPruner
 from ppl_eval.ppl_eval import ppl_metric
 from torchvision.utils import save_image
-
+import sys
+sys.path.append("/home/wangzefang/edgevar/EdgeVAR/Torch-Pruning")
 from importlib.metadata import version
 from transformers import AutoTokenizer, AutoModelForCausalLM,LlamaForCausalLM
 setattr(torch.nn.Linear, 'reset_parameters', lambda self: None)     # disable default parameter init for faster speed
@@ -204,7 +205,7 @@ def prepare_calibration_d16_last_input(args, model, dataloader,device):
             # inps.append(inp)
             # print(x.shape)
             tokens = x.shape[1]
-            if tokens ==256 :
+            if tokens ==args.specific_layer :
                 cache.append({
                 "i": len(cache),
                 "x": x,
@@ -350,12 +351,27 @@ def model_slimming(model, dataloader, args):
                 for name in module_dict:
                     sparsity = args.sparsity[i] if isinstance(args.sparsity, list) else args.sparsity
                     print(f"layer {i}: {name} sparsity {sparsity}")
-                    idx = pruner_dict[name].struct_prune(    #执行剪枝操作
-                        sparsity=sparsity,
-                        percdamp=args.percdamp,
-                        headsize=64 if name == "attn.proj" else 1,
-                        layer_idx=i,
-                    )
+                    if args.prune_method == "slimgpt":
+                        idx = pruner_dict[name].struct_prune(    #执行剪枝操作
+                            sparsity=sparsity,
+                            percdamp=args.percdamp,
+                            headsize=64 if name == "attn.proj" else 1,
+                            layer_idx=i,
+                        )
+                    elif args.prune_method == "magnitude":
+                        idx = pruner_dict[name].magnitude_prune(    #执行剪枝操作
+                            sparsity=sparsity,
+                            percdamp=args.percdamp,
+                            headsize=64 if name == "attn.proj" else 1,
+                            layer_idx=i,
+                        )
+                    elif args.prune_method == "taylor":
+                        idx = pruner_dict[name].taylor_prune(    #执行剪枝操作
+                            sparsity=sparsity,
+                            percdamp=args.percdamp,
+                            headsize=64 if name == "attn.proj" else 1,
+                            layer_idx=i,
+                        )
                     pruner_dict[name].free()
                     target_layer = get_module_by_name(model.blocks[i], name)
                     if name == "ffn.fc2":
@@ -408,17 +424,19 @@ def model_slimming(model, dataloader, args):
     return model
     
 
-MODEL_DEPTH =  24   # TODO: =====> please specify MODEL_DEPTH <=====
-assert MODEL_DEPTH in {12,16, 20, 24, 30}
+
 
 def main(args):
     print('load model...')
     # model, tokenizer = get_model(args.model_path)
-
+    MODEL_DEPTH =  args.maxlayer   # TODO: =====> please specify MODEL_DEPTH <=====
+    assert MODEL_DEPTH in {12,16, 20, 24, 30}
     hf_home = 'https://huggingface.co/FoundationVision/var/resolve/main'
-    vae_ckpt, var_ckpt = '/wanghuan/data/wangzefang/slim_VAR_copy/VAR/model_zoo/vae_ch160v4096z32.pth', f'/wanghuan/data/wangzefang/slim_VAR_copy/VAR/model_zoo/var_d{MODEL_DEPTH}.pth'
-    if not osp.exists(vae_ckpt): os.system(f'wget {hf_home}/{vae_ckpt}')
-    if not osp.exists(var_ckpt): os.system(f'wget {hf_home}/{var_ckpt}')
+    vae_ckpt, var_ckpt = '/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_VAR/model_zoo/vae_ch160v4096z32.pth', f'/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_VAR/model_zoo/var_d{MODEL_DEPTH}.pth'
+    if not osp.exists(vae_ckpt): print("var not exist")
+    if not osp.exists(var_ckpt): print("var not exist")
+    # if not osp.exists(vae_ckpt): os.system(f'wget {hf_home}/{vae_ckpt}')
+    # if not osp.exists(var_ckpt): os.system(f'wget {hf_home}/{var_ckpt}')
 
     patch_nums = (1, 2, 3, 4, 5, 6, 8, 10, 13, 16)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -441,7 +459,7 @@ def main(args):
     model.eval()
     
     args.minlayer = max(args.minlayer, 0)
-    args.maxlayer = min(args.maxlayer, model.C)
+    args.maxlayer = min(args.maxlayer,36)
 
     if args.non_uniform:
         assert 0 <= args.min_sparsity <= args.max_sparsity < 1        
@@ -474,7 +492,9 @@ def main(args):
     #     seqlen=model.seqlen,
     #     tokenizer=tokenizer
     # )
-    dataloader = torch.arange(0,200).cuda()
+    # dataloader = torch.arange(0,args.num_samples).cuda()
+
+    dataloader = torch.randint(0, 1000, (args.num_samples,)).cuda()
 
     num_samples = len(dataloader)
     if args.num_samples != num_samples:
@@ -523,53 +543,53 @@ def main(args):
     )
 
 
-    save_dir = "/wanghuan/data/wangzefang/slim_VAR_copy/slimgpt_pub/image/d24_test_0.2_200i_temporary"
-    os.makedirs(save_dir,exist_ok=True)
-    save_model = "/wanghuan/data/wangzefang/slim_VAR_copy/slimgpt_pub/sparsity_model"
+    # save_dir = "/home/wangzefang/edgevar/EdgeVAR/VAR_FIDtest/output/FID_test/d24_test_0.2_200i_temporary"
+    # os.makedirs(save_dir,exist_ok=True)
+    save_model = "/home/wangzefang/edgevar/EdgeVAR/slimgpt_pub/output/sparsity_model"
     os.makedirs(save_model,exist_ok=True)
-    save_path = os.path.join(save_model, 'd24_0.2var_200i_256input_temporary.pth')
+    save_path = os.path.join(save_model, args.model_name)
     torch.save(model.state_dict(), save_path)
 
-    # dot_path = os.path.join(save_model, '0.4var_1i_256input_computational_graph.dot')
-    # dot = make_dot(result, params=dict(model.named_parameters()))
-    # dot.save(dot_path)
-    # for class_num in range(5):
-    class_num = 0
-    class_labels = (980, 980, 437, 437, 22, 22, 562, 562,50,50)
-    # class_labels = (980,)
-    # class_labels  = torch.full((10,), class_num, dtype=torch.long).cuda()
-    label_B: torch.LongTensor = torch.tensor(class_labels, device=device)
-    with torch.inference_mode():
-        with torch.autocast('cuda', enabled=True, dtype=torch.float16, cache_enabled=True):    # using bfloat16 can be faster
-            for b in model.blocks: b.attn.kv_caching(True)
-            recon_B3HW = model(label_B)
-            for i in range(recon_B3HW.shape[0]):
-                save_image(recon_B3HW[i], f'{save_dir}/{class_num:03d}_img_{i:03d}.png')
+    # # dot_path = os.path.join(save_model, '0.4var_1i_256input_computational_graph.dot')
+    # # dot = make_dot(result, params=dict(model.named_parameters()))
+    # # dot.save(dot_path)
+    # # for class_num in range(5):
+    # class_num = 0
+    # class_labels = (980, 980, 437, 437, 22, 22, 562, 562,50,50)
+    # # class_labels = (980,)
+    # # class_labels  = torch.full((10,), class_num, dtype=torch.long).cuda()
+    # label_B: torch.LongTensor = torch.tensor(class_labels, device=device)
+    # with torch.inference_mode():
+    #     with torch.autocast('cuda', enabled=True, dtype=torch.float16, cache_enabled=True):    # using bfloat16 can be faster
+    #         for b in model.blocks: b.attn.kv_caching(True)
+    #         recon_B3HW = model(label_B)
+    #         for i in range(recon_B3HW.shape[0]):
+    #             save_image(recon_B3HW[i], f'{save_dir}/{class_num:03d}_img_{i:03d}.png')
 
-    start_event = torch.cuda.Event(enable_timing=True)
-    end_event = torch.cuda.Event(enable_timing=True)
+    # start_event = torch.cuda.Event(enable_timing=True)
+    # end_event = torch.cuda.Event(enable_timing=True)
 
 
-    with torch.inference_mode():
-        B = len(class_labels)
-        label_B: torch.LongTensor = torch.tensor(class_labels, device=device)
-        with measure_peak_memory():
-            with torch.autocast('cuda', enabled=True, dtype=torch.float16, cache_enabled=True):    # using bfloat16 can be faster
-                for i in range(3):
-                    start_event.record()
-                    recon_B3HW = model(label_B)
-                    end_event.record()
-                    torch.cuda.synchronize()
-                    # Calculation run time (milliseconds)
-                    elapsed_time = start_event.elapsed_time(end_event)
-                    print("running time:",int(elapsed_time),"ms", "batch size:",str(len(class_labels)))
+    # with torch.inference_mode():
+    #     B = len(class_labels)
+    #     label_B: torch.LongTensor = torch.tensor(class_labels, device=device)
+    #     with measure_peak_memory():
+    #         with torch.autocast('cuda', enabled=True, dtype=torch.float16, cache_enabled=True):    # using bfloat16 can be faster
+    #             for i in range(3):
+    #                 start_event.record()
+    #                 recon_B3HW = model(label_B)
+    #                 end_event.record()
+    #                 torch.cuda.synchronize()
+    #                 # Calculation run time (milliseconds)
+    #                 elapsed_time = start_event.elapsed_time(end_event)
+    #                 print("running time:",int(elapsed_time),"ms", "batch size:",str(len(class_labels)))
 
-    if not args.skip_evaluate:
-        print('start evaluate...')
-        dataset = 'wikitext2'
-        ppl = eval_ppl(model.cuda(), tokenizer, dataset, device=torch.device("cuda:0"))
-        print(f"\nppl on {dataset}: {ppl}\n")
-        ppl_metric(model.cuda().half(), tokenizer, ['wikitext2'], 128, 2)
+    # if not args.skip_evaluate:
+    #     print('start evaluate...')
+    #     dataset = 'wikitext2'
+    #     ppl = eval_ppl(model.cuda(), tokenizer, dataset, device=torch.device("cuda:0"))
+    #     print(f"\nppl on {dataset}: {ppl}\n")
+    #     ppl_metric(model.cuda().half(), tokenizer, ['wikitext2'], 128, 2)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -659,7 +679,14 @@ if __name__ == "__main__":
         "--prune_method", type=str, default="slmipgpt", 
         help="method.",
     )
-
+    parser.add_argument(
+        "--specific_layer", type=int, default=0, 
+        help="choose which layer to evaluate",
+    )
+    parser.add_argument(
+        "--model_name", type=str, default="model", 
+        help="choose which layer to evaluate",
+    )
     args = parser.parse_args()
     print(args)
     set_seed(args.seed)

@@ -313,3 +313,40 @@ W0728 12:47:26.993877 140240809432128 torch/distributed/run.py:757] ************
 [07-29 19:30:57] (dgeVAR/VAR/utils/misc.py, line 314)=> [Ep]: [   8/20]  [   0/2732]  eta: 2:40:43  tlr: 0.00012  tnm: 0.32  Lm: 6.224 (6.224)  Lt: 5.561 (5.561)  Accm: 4.25 (4.25)  Acct: 6.68 (6.68)  time: 3.5299  data: 0.5688
 [07-29 20:12:41] (dgeVAR/VAR/utils/misc.py, line 314)=> [Ep]: [   8/20]  [ 682/2732]  eta: 2:05:25  tlr: 0.00012  tnm: 0.31  Lm: 6.254 (6.254)  Lt: 5.586 (5.586)  Accm: 4.12 (4.12)  Acct: 6.48 (6.48)  time: 3.7002  data: 0.5478
 [07-29 20:54:20] (dgeVAR/VAR/utils/misc.py, line 314)=> [Ep]: [   8/20]  [1365/2732]  eta: 1:23:30  tlr: 0.00012  tnm: 0.32  Lm: 6.224 (6.229)  Lt: 5.592 (5.588)  Accm: 4.25 (4.24)  Acct: 6.54 (6.50)  time: 3.7084  data: 0.5472
+[07-29 21:36:06] (dgeVAR/VAR/utils/misc.py, line 314)=> [Ep]: [   8/20]  [2048/2732]  eta: 0:41:47  tlr: 0.00012  tnm: 0.31  Lm: 6.223 (6.227)  Lt: 5.578 (5.582)  Accm: 4.22 (4.23)  Acct: 6.49 (6.48)  time: 3.5839  data: 0.5723
+W0729 13:51:05.058462 140240809432128 torch/distributed/elastic/multiprocessing/api.py:851] Sending process 1141201 closing signal SIGTERM
+W0729 13:51:05.060837 140240809432128 torch/distributed/elastic/multiprocessing/api.py:851] Sending process 1141202 closing signal SIGTERM
+W0729 13:51:05.061640 140240809432128 torch/distributed/elastic/multiprocessing/api.py:851] Sending process 1141203 closing signal SIGTERM
+W0729 13:51:05.061950 140240809432128 torch/distributed/elastic/multiprocessing/api.py:851] Sending process 1141205 closing signal SIGTERM
+W0729 13:51:05.062230 140240809432128 torch/distributed/elastic/multiprocessing/api.py:851] Sending process 1141207 closing signal SIGTERM
+W0729 13:51:05.062497 140240809432128 torch/distributed/elastic/multiprocessing/api.py:851] Sending process 1141209 closing signal SIGTERM
+E0729 13:51:06.710263 140240809432128 torch/distributed/elastic/multiprocessing/api.py:826] failed (exitcode: -9) local_rank: 0 (pid: 1141200) of binary: /home/wangzefang/miniconda3/envs/distill/bin/python
+Traceback (most recent call last):
+  File "/home/wangzefang/miniconda3/envs/distill/bin/torchrun", line 33, in <module>
+    sys.exit(load_entry_point('torch==2.3.0', 'console_scripts', 'torchrun')())
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 347, in wrapper
+    return f(*args, **kwargs)
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/run.py", line 879, in main
+    run(args)
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/run.py", line 870, in run
+    elastic_launch(
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/launcher/api.py", line 132, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/launcher/api.py", line 263, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+========================================================
+train.py FAILED
+--------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+--------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-07-29_13:51:05
+  host      : ubuntu
+  rank      : 0 (local_rank: 0)
+  exitcode  : -9 (pid: 1141200)
+  error_file: <N/A>
+  traceback : Signal 9 (SIGKILL) received by PID 1141200
+========================================================

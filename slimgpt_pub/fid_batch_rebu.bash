@@ -23,20 +23,21 @@
 # cd /wanghuan/data/wangzefang/slim_VAR_copy/slimgpt_pub
 
 # patch_nums_list=(1 2 3 4 5 6 8 10 13 16)
-sample_list=(50 100 150 200)
-result_txt="rebuttal1.log"
+#探索不同分割种子对于结果的影响 total_seed=(0 1 2 3 4 5 6 7 8 9) specific_layer=256 maxlayer=24  sparsity=0.1 num_samples=130
+total_seed=(0 1 2 3 4 5 6 7 8 9)
+result_txt="rebuttal1_seed_10%.log"
 > $result_txt  # 清空输出文件
 
-for num_samples in "${sample_list[@]}"; do
+for seed in "${total_seed[@]}"; do
     
     # 1. 执行 prune.py
     specific_layer=256
     maxlayer=24 
-    sparsity=0.2
-    # num_samples=100
-    model_name="d${maxlayer}_${sparsity}sparsity_${num_samples}i_${specific_layer}eva_scale.pth" 
+    sparsity=0.1
+    num_samples=130
+    model_name="d${maxlayer}_${sparsity}sparsity_${num_samples}i_${specific_layer}eva_scale_randomseed_temporary.pth" 
 
-    CUDA_VISIBLE_DEVICES=0 python -u /home/wangzefang/edgevar/EdgeVAR/slimgpt_pub/prune.py \
+    CUDA_VISIBLE_DEVICES=0 python -u /home/wangzefang/edgevar/EdgeVAR/slimgpt_pub/prune_v2.py \
     --minlayer 0 \
     --maxlayer $maxlayer \
     --num_samples $num_samples \
@@ -45,17 +46,18 @@ for num_samples in "${sample_list[@]}"; do
     --prune_method slimgpt \
     --sparsity $sparsity \
     --specific_layer $specific_layer \
-    --model_name $model_name
+    --model_name $model_name \
+    --seed $seed
 
     # 2. 切换目录并执行 FID_test.py
     output_name=$model_name
 
     CUDA_VISIBLE_DEVICES=0 python -u /home/wangzefang/edgevar/EdgeVAR/VAR_FIDtest/FID_test.py --depth $maxlayer --sparsity $sparsity \
         --var_model="/home/wangzefang/edgevar/EdgeVAR/slimgpt_pub/output/sparsity_model/${model_name}" \
-        --output_name="${output_name}"
+        --output_name=$output_name
 
     # 3. 执行 torch-fidelity，并将输出追加到结果文件
-    echo "num_samples: $num_samples" >> $result_txt
+    echo "seed: $seed" >> $result_txt
 
     echo "----- fidelity -----" >> $result_txt
 

@@ -184,3 +184,84 @@ class SlimGPT(object):
             self.out1 = None
         self.H = None
         torch.cuda.empty_cache()
+
+    def magnitude_prune(self, sparsity, percdamp,headsize,layer_idx):
+        """
+        按权重绝对值剪枝，headsize=64时以head为单位剪除，headsize=1时直接按列剪除
+        """
+        W = self.layer.weight.data.clone()
+        if isinstance(self.layer, nn.Conv2d):
+            W = W.flatten(1)
+        if isinstance(self.layer, transformers.Conv1D):
+            W = W.t()
+        W = W.float()
+
+        if headsize > 1:
+            num_heads = W.shape[1] // headsize
+            assert W.shape[1] % headsize == 0, "列数必须能被headsize整除"
+            # 计算要剪掉的head数量
+            target_heads = round(num_heads * sparsity)
+            # 计算每个head的分数
+            head_scores = W.abs().reshape(W.shape[0], num_heads, headsize).sum(dim=(0,2))  # [num_heads]
+            prune_head_idx = torch.argsort(head_scores)[:target_heads]  # 要剪掉的head编号
+            # 得到要剪掉的所有列的索引
+            prune_col_idx = []
+            for h in prune_head_idx:
+                prune_col_idx.extend(range(h*headsize, (h+1)*headsize))
+            prune_col_idx = torch.tensor(prune_col_idx, device=W.device)
+        else:
+            # headsize=1，直接按列剪
+            num_prune = round(W.shape[1] * sparsity)
+            col_scores = W.abs().sum(dim=0)
+            prune_col_idx = torch.argsort(col_scores)[:num_prune]
+
+        # 剪枝
+        W[:, prune_col_idx] = 0
+        if isinstance(self.layer, transformers.Conv1D):
+            W = W.t()
+        self.layer.weight.data = W.reshape(self.layer.weight.shape).to(self.layer.weight.data.dtype)
+        return prune_col_idx
+
+    def taylor_prune(self, sparsity, percdamp, headsize, layer_idx):
+        """
+        按一阶Taylor分数剪枝，headsize=64时以head为单位剪除，headsize=1时直接按列剪除
+        """
+        W = self.layer.weight.data.clone()
+        if isinstance(self.layer, nn.Conv2d):
+            W = W.flatten(1)
+        if isinstance(self.layer, transformers.Conv1D):
+            W = W.t()
+        W = W.float()
+
+        # 需要有梯度
+        if self.layer.weight.grad is None:
+            raise RuntimeError("Taylor剪枝需要先反向传播获得梯度")
+        grad = self.layer.weight.grad.clone()
+        if isinstance(self.layer, nn.Conv2d):
+            grad = grad.flatten(1)
+        if isinstance(self.layer, transformers.Conv1D):
+            grad = grad.t()
+        grad = grad.float()
+
+        if headsize > 1:
+            num_heads = W.shape[1] // headsize
+            assert W.shape[1] % headsize == 0, "列数必须能被headsize整除"
+            target_heads = round(num_heads * sparsity)
+            # 计算每个head的taylor分数
+            taylor_scores = (W * grad).abs().reshape(W.shape[0], num_heads, headsize).sum(dim=(0,2))  # [num_heads]
+            prune_head_idx = torch.argsort(taylor_scores)[:target_heads]
+            prune_col_idx = []
+            for h in prune_head_idx:
+                prune_col_idx.extend(range(h*headsize, (h+1)*headsize))
+            prune_col_idx = torch.tensor(prune_col_idx, device=W.device)
+        else:
+            num_prune = round(W.shape[1] * sparsity)
+            taylor_scores = (W * grad).abs().sum(dim=0)
+            prune_col_idx = torch.argsort(taylor_scores)[:num_prune]
+
+        # 剪枝
+        W[:, prune_col_idx] = 0
+        if isinstance(self.layer, transformers.Conv1D):
+            W = W.t()
+        self.layer.weight.data = W.reshape(self.layer.weight.shape).to(self.layer.weight.data.dtype)
+        return prune_col_idx

@@ -94,7 +94,7 @@ def build_everything(args: arg_util.Args):
         flash_if_available=args.fuse, fused_if_available=args.fuse,
         init_adaln=args.aln, init_adaln_gamma=args.alng, init_head=args.hd, init_std=args.ini,args=args
     )
-    checkpoint = torch.load("/home/wangzefang/edgevar/EdgeVAR/slimgpt_pub/output/sparsity_model/d16_0.2_256_input_200i.pth", map_location='cpu')
+    checkpoint = torch.load(args.var_path, map_location='cpu')
     if 'trainer' in checkpoint:
         print("检测到训练检查点文件，正在提取模型权重...")
         if 'var_wo_ddp' in checkpoint['trainer']:

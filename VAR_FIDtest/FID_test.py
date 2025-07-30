@@ -25,9 +25,10 @@ vae_ckpt = '/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_V
 var_ckpt = args.var_model
 print(var_ckpt)
 #    /home/wangzefang/Projects/project/slim_VAR/slimgpt_pub/sparsity_model/d24_0.4var_1i_256input.pth
-if not osp.exists(vae_ckpt): os.system(f'wget {hf_home}/{vae_ckpt}')
-if not osp.exists(var_ckpt): os.system(f'wget {hf_home}/{var_ckpt}')
-
+# if not osp.exists(vae_ckpt): os.system(f'wget {hf_home}/{vae_ckpt}')
+# if not osp.exists(var_ckpt): os.system(f'wget {hf_home}/{var_ckpt}')
+if not osp.exists(vae_ckpt): print("var not exist")
+if not osp.exists(var_ckpt): print("var not exist")
 # build vae, var
 patch_nums = (1, 2, 3, 4, 5, 6, 8, 10, 13, 16)
 device = 'cuda' if torch.cuda.is_available() else 'cpu'

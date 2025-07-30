@@ -1,0 +1,258 @@
+nohup: ignoring input
+/home/wangzefang/edgevar/EdgeVAR/slimgpt_pub/slim_utils
+Namespace(batch_samples=128, cache_dev='cuda', dataset='wikitext2', max_sparsity=0.3, maxlayer=24, min_sparsity=0.06, minlayer=0, model_name='d24_0.2sparsity_30i_256eva_scale_magnitudemethod_temporary.pth', model_path='/home/sumingluo/Model_weight/meta/llama-2-7b-hf', no_compensate=False, non_uniform=False, non_uniform_strategy='log_increase', num_samples=30, percdamp=0.001, prune_method='magnitude', save_dir='', save_pruned_weights=False, seed=0, seqlen=2048, skip_evaluate=True, sparsity=0.2, specific_layer=256)
+load model...
+
+[constructor]  ==== flash_if_available=True (0/24), fused_if_available=True (fusing_add_ln=0/24, fusing_mlp=0/24) ==== 
+    [VAR config ] embed_dim=1536, num_heads=24, depth=24, mlp_ratio=4.0
+    [drop ratios ] drop_rate=0.0, attn_drop_rate=0.0, drop_path_rate=0.1 (tensor([0.0000, 0.0043, 0.0087, 0.0130, 0.0174, 0.0217, 0.0261, 0.0304, 0.0348,
+        0.0391, 0.0435, 0.0478, 0.0522, 0.0565, 0.0609, 0.0652, 0.0696, 0.0739,
+        0.0783, 0.0826, 0.0870, 0.0913, 0.0957, 0.1000]))
+
+[init_weights] VAR with init_std=0.0147314
+prepare finished.
+all params: 1.03 B	 layer params: 1.03 B	 extra params: 0.0 B
+load dataset...
+start slimming...
+pruning...
+layer 0: attn.proj sparsity 0.2
+layer 0: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 1: attn.proj sparsity 0.2
+layer 1: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 2: attn.proj sparsity 0.2
+layer 2: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 3: attn.proj sparsity 0.2
+layer 3: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 4: attn.proj sparsity 0.2
+layer 4: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 5: attn.proj sparsity 0.2
+layer 5: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 6: attn.proj sparsity 0.2
+layer 6: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 7: attn.proj sparsity 0.2
+layer 7: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 8: attn.proj sparsity 0.2
+layer 8: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 9: attn.proj sparsity 0.2
+layer 9: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 10: attn.proj sparsity 0.2
+layer 10: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 11: attn.proj sparsity 0.2
+layer 11: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 12: attn.proj sparsity 0.2
+layer 12: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 13: attn.proj sparsity 0.2
+layer 13: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 14: attn.proj sparsity 0.2
+layer 14: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 15: attn.proj sparsity 0.2
+layer 15: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 16: attn.proj sparsity 0.2
+layer 16: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 17: attn.proj sparsity 0.2
+layer 17: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 18: attn.proj sparsity 0.2
+layer 18: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 19: attn.proj sparsity 0.2
+layer 19: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 20: attn.proj sparsity 0.2
+layer 20: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 21: attn.proj sparsity 0.2
+layer 21: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 22: attn.proj sparsity 0.2
+layer 22: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+layer 23: attn.proj sparsity 0.2
+layer 23: ffn.fc2 sparsity 0.2
+torch.Size([4915, 1536])
+torch.Size([1536, 4915])
+torch.Size([4608, 1536])
+torch.Size([1536, 1536])
+22.699172258377075
+******************************
+layer 0 sparsity 0.012703
+layer 1 sparsity 0.012703
+layer 2 sparsity 0.012703
+layer 3 sparsity 0.012703
+layer 4 sparsity 0.012703
+layer 5 sparsity 0.012703
+layer 6 sparsity 0.012703
+layer 7 sparsity 0.012703
+layer 8 sparsity 0.012703
+layer 9 sparsity 0.012703
+layer 10 sparsity 0.012703
+layer 11 sparsity 0.012703
+layer 12 sparsity 0.012703
+layer 13 sparsity 0.012703
+layer 14 sparsity 0.012703
+layer 15 sparsity 0.012703
+layer 16 sparsity 0.012703
+layer 17 sparsity 0.012703
+layer 18 sparsity 0.012703
+layer 19 sparsity 0.012703
+layer 20 sparsity 0.012703
+layer 21 sparsity 0.012703
+layer 22 sparsity 0.012703
+layer 23 sparsity 0.012703
+sparsity sanity check 0.0127
+******************************
+all params: 0.94 B	 layer params: 0.94 B	 extra params: 0.0 B
+decoder_time:75.31118392944336ms
+all:{} 0.2791769504547119
+VAR(
+  drop_path_rate=0.1
+  (word_embed): Linear(in_features=32, out_features=1536, bias=True)
+  (class_emb): Embedding(1001, 1536)
+  (lvl_embed): Embedding(10, 1536)
+  (shared_ada_lin): Identity()
+  (blocks): ModuleList(
+    (0): AdaLNSelfAttn(
+      shared_aln=False
+      (drop_path): Identity()
+      (attn): SelfAttention(
+        using_flash=False, using_xform=False, attn_l2_norm=True
+        (mat_qkv): Linear(in_features=1536, out_features=4608, bias=False)
+        (proj): Linear(in_features=1536, out_features=1536, bias=True)
+        (proj_drop): Identity()
+      )
+      (ffn): FFN(
+        fused_mlp_func=False
+        (fc1): Linear(in_features=1536, out_features=4915, bias=True)
+        (act): GELU(approximate='tanh')
+        (fc2): Linear(in_features=4915, out_features=1536, bias=True)
+        (drop): Identity()
+      )
+      (ln_wo_grad): LayerNorm((1536,), eps=1e-06, elementwise_affine=False)
+      (ada_lin): Sequential(
+        (0): SiLU()
+        (1): Linear(in_features=1536, out_features=9216, bias=True)
+      )
+    )
+    (1-23): 23 x AdaLNSelfAttn(
+      shared_aln=False
+      (drop_path): DropPath((drop_prob=...))
+      (attn): SelfAttention(
+        using_flash=False, using_xform=False, attn_l2_norm=True
+        (mat_qkv): Linear(in_features=1536, out_features=4608, bias=False)
+        (proj): Linear(in_features=1536, out_features=1536, bias=True)
+        (proj_drop): Identity()
+      )
+      (ffn): FFN(
+        fused_mlp_func=False
+        (fc1): Linear(in_features=1536, out_features=4915, bias=True)
+        (act): GELU(approximate='tanh')
+        (fc2): Linear(in_features=4915, out_features=1536, bias=True)
+        (drop): Identity()
+      )
+      (ln_wo_grad): LayerNorm((1536,), eps=1e-06, elementwise_affine=False)
+      (ada_lin): Sequential(
+        (0): SiLU()
+        (1): Linear(in_features=1536, out_features=9216, bias=True)
+      )
+    )
+  )
+  (head_nm): AdaLNBeforeHead(
+    (ln_wo_grad): LayerNorm((1536,), eps=1e-06, elementwise_affine=False)
+    (ada_lin): Sequential(
+      (0): SiLU()
+      (1): Linear(in_features=1536, out_features=3072, bias=True)
+    )
+  )
+  (head): Linear(in_features=1536, out_features=4096, bias=True)
+)
+decoder_time:6.716251373291016ms
+decoder_time:6.181478500366211ms
+torch.Size([1, 3, 256, 256])
+  Params: 942.76 M => 942.76 M
+   MACs: 585.58 G => 585.58 G

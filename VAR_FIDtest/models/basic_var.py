@@ -67,9 +67,9 @@ class SelfAttention(nn.Module):
         self.block_idx, self.num_heads, self.head_dim = block_idx, num_heads, embed_dim // num_heads  # =64
         self.attn_l2_norm = attn_l2_norm
 
-        real_num_heads = round(num_heads*(1-args.sparsity))
-        self.num_heads = real_num_heads
-        inner_dim = self.num_heads*64
+        # real_num_heads = round(num_heads*(1-args.sparsity))
+        # self.num_heads = real_num_heads
+        # inner_dim = self.num_heads*64
         # print(f"[SelfAttention] embed_dim: {embed_dim}, real_num_heads: {real_num_heads}")
         if self.attn_l2_norm:
             self.scale = 1
@@ -78,11 +78,11 @@ class SelfAttention(nn.Module):
         else:
             self.scale = 0.25 / math.sqrt(self.head_dim)
         
-        self.mat_qkv = nn.Linear(embed_dim, inner_dim * 3, bias=False)
-        self.q_bias, self.v_bias = nn.Parameter(torch.zeros(inner_dim)), nn.Parameter(torch.zeros(inner_dim))
-        self.register_buffer('zero_k_bias', torch.zeros(inner_dim))
+        self.mat_qkv = nn.Linear(embed_dim, embed_dim * 3, bias=False)
+        self.q_bias, self.v_bias = nn.Parameter(torch.zeros(embed_dim)), nn.Parameter(torch.zeros(embed_dim))
+        self.register_buffer('zero_k_bias', torch.zeros(embed_dim))
         
-        self.proj = nn.Linear(inner_dim, embed_dim)
+        self.proj = nn.Linear(embed_dim, embed_dim)
         self.proj_drop = nn.Dropout(proj_drop, inplace=True) if proj_drop > 0 else nn.Identity()
         self.attn_drop: float = attn_drop
         self.using_flash = flash_if_available and flash_attn_func is not None
@@ -104,7 +104,7 @@ class SelfAttention(nn.Module):
         # valid_indices = self.pruned_indices[self.pruned_indices < self.proj.weight.shape[1]]
         # print("真实attn的长度为:",len(valid_indices))
         # self.proj.weight.data[:, valid_indices] = 0
-        # self.proj.weight.data[:, self.pruned_indices] = 0
+        self.proj.weight.data[:, self.pruned_indices] = 0
 
         qkv = F.linear(input=x, weight=self.mat_qkv.weight, bias=torch.cat((self.q_bias, self.zero_k_bias, self.v_bias))).view(B, L, 3, self.num_heads, self.head_dim)
         main_type = qkv.dtype

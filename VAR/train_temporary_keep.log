@@ -1,0 +1,340 @@
+nohup: ignoring input
+W0730 08:56:39.591565 140127173698624 torch/distributed/run.py:757] 
+W0730 08:56:39.591565 140127173698624 torch/distributed/run.py:757] *****************************************
+W0730 08:56:39.591565 140127173698624 torch/distributed/run.py:757] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0730 08:56:39.591565 140127173698624 torch/distributed/run.py:757] *****************************************
+[dist initialize] mp method=spawn
+[dist initialize] mp method=spawn
+[dist initialize] mp method=spawn
+[dist initialize] mp method=spawn
+[dist initialize] mp method=spawn
+[dist initialize] mp method=spawn
+[lrk=1, rk=1]
+[lrk=5, rk=5]
+[lrk=0, rk=0]
+[lrk=2, rk=2]
+[lrk=3, rk=3]
+[lrk=4, rk=4]
+[07-30 16:56:43] (AR/VAR/utils/arg_util.py, line 178)=> [tf32] [precis] torch.get_float32_matmul_precision(): high
+[07-30 16:56:43] (AR/VAR/utils/arg_util.py, line 179)=> [tf32] [ conv ] torch.backends.cudnn.allow_tf32: True
+[07-30 16:56:43] (AR/VAR/utils/arg_util.py, line 180)=> [tf32] [matmul] torch.backends.cuda.matmul.allow_tf32: True
+[07-30 16:56:45] (train.py                , line  41)=> global bs=372, local bs=62
+[07-30 16:56:45] (train.py                , line  42)=> initial args:
+{
+  data_path           : /home/wangzefang/Datasets/ImageNet-1K
+  exp_name            : text
+  vfast               : 0
+  var_path            : 
+  tfast               : 0
+  depth               : 16
+  sparsity            : 0.2
+  ini                 : -1
+  hd                  : 0.02
+  aln                 : 0.5
+  alng                : 0.001
+  fp16                : 1
+  tblr                : 0.0001
+  tlr                 : 0.00014531250000000002
+  twd                 : 0.05
+  twde                : 0.05
+  tclip               : 2.0
+  ls                  : 0.0
+  maxlayer            : 16
+  bs                  : 372
+  batch_size          : 62
+  glb_batch_size      : 372
+  ac                  : 1
+  ep                  : 20
+  wp                  : 0.4
+  wp0                 : 0.005
+  wpe                 : 0.1
+  sche                : lin0
+  opt                 : adamw
+  afuse               : True
+  saln                : False
+  anorm               : True
+  fuse                : True
+  pn                  : 1_2_3_4_5_6_8_10_13_16
+  patch_size          : 16
+  patch_nums          : (1, 2, 3, 4, 5, 6, 8, 10, 13, 16)
+  resos               : (16, 32, 48, 64, 80, 96, 128, 160, 208, 256)
+  data_load_reso      : 256
+  mid_reso            : 1.125
+  hflip               : False
+  workers             : 0
+  pg                  : 0.0
+  pg0                 : 4
+  pgwp                : 0.06666666666666667
+  cmd                 : --depth=16 --bs=370 --ep=20 --fp16=1 --alng=1e-3 --wpe=0.1 --sparsity=0.2 --local_out_dir_path=/home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i_temporary --data_path=/home/wangzefang/Datasets/ImageNet-1K --var_path=
+  branch              : main
+  commit_id           : 8f6a484de1c6ad55bd74076c67b5e9139271b9ff
+  commit_msg          : third
+  acc_mean            : None
+  acc_tail            : None
+  L_mean              : None
+  L_tail              : None
+  vacc_mean           : None
+  vacc_tail           : None
+  vL_mean             : None
+  vL_tail             : None
+  grad_norm           : None
+  cur_lr              : None
+  cur_wd              : None
+  cur_it              : 
+  cur_ep              : 
+  remain_time         : 
+  finish_time         : 
+  local_out_dir_path  : /home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i_temporary
+  tb_log_dir_path     : /home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i_temporary/tb-VARd16__pn1_2_3_4_5_6_8_10_13_16__b372ep20adamlr0.0001wd0.05
+  log_txt_path        : /home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i_temporary/log.txt
+  last_ckpt_path      : /home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i_temporary/ar-ckpt-last.pth
+  tf32                : True
+  seed                : None
+  transfer            : False
+  same_seed_for_all_ranks: 0
+  local_debug         : False
+  dbg_nan             : False
+}
+
+[07-30 16:56:45] (train.py                , line  46)=> [build PT data] ...
+
+[07-30 16:56:48] (dgeVAR/VAR/utils/data.py, line  34)=> [Dataset] len(train_set)=1281167, len(val_set)=50000, num_classes=1000
+[07-30 16:56:48] (dgeVAR/VAR/utils/data.py, line  48)=> Transform [train] = 
+[07-30 16:56:48] (dgeVAR/VAR/utils/data.py, line  51)=> Resize(size=288, interpolation=lanczos, max_size=None, antialias=True)
+[07-30 16:56:48] (dgeVAR/VAR/utils/data.py, line  51)=> RandomCrop(size=(256, 256), padding=None)
+[07-30 16:56:48] (dgeVAR/VAR/utils/data.py, line  51)=> ToTensor()
+[07-30 16:56:48] (dgeVAR/VAR/utils/data.py, line  51)=> <function normalize_01_into_pm1 at 0x7fd341d200d0>
+[07-30 16:56:48] (dgeVAR/VAR/utils/data.py, line  54)=> ---------------------------
+
+[07-30 16:56:48] (dgeVAR/VAR/utils/data.py, line  48)=> Transform [val] = 
+[07-30 16:56:48] (dgeVAR/VAR/utils/data.py, line  51)=> Resize(size=288, interpolation=lanczos, max_size=None, antialias=True)
+[07-30 16:56:48] (dgeVAR/VAR/utils/data.py, line  51)=> CenterCrop(size=(256, 256))
+[07-30 16:56:48] (dgeVAR/VAR/utils/data.py, line  51)=> ToTensor()
+[07-30 16:56:48] (dgeVAR/VAR/utils/data.py, line  51)=> <function normalize_01_into_pm1 at 0x7fd341d200d0>
+[07-30 16:56:48] (dgeVAR/VAR/utils/data.py, line  54)=> ---------------------------
+
+[07-30 16:56:48] (train.py                , line  69)=> [auto_resume] load ckpt from @ /home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i_temporary/ar-ckpt-best.pth ...
+[07-30 16:56:48] (train.py                , line  69)=> [auto_resume success] resume from ep7, it0
+[07-30 16:56:48] (train.py                , line  70)=> [dataloader multi processing] ...     [dataloader multi processing](*) finished! (0.00s)
+[07-30 16:56:48] (train.py                , line  76)=> [dataloader] gbs=372, lbs=62, iters_train=3444, types(tr, va)=('DatasetFolder', 'DatasetFolder')
+[07-30 16:56:48] (dgeVAR/VAR/models/var.py, line 102)=> 
+[constructor]  ==== flash_if_available=True (0/16), fused_if_available=True (fusing_add_ln=0/16, fusing_mlp=0/16) ==== 
+    [VAR config ] embed_dim=1024, num_heads=16, depth=16, mlp_ratio=4.0
+    [drop ratios ] drop_rate=0.0, attn_drop_rate=0.0, drop_path_rate=0.0666667 (tensor([0.0000, 0.0044, 0.0089, 0.0133, 0.0178, 0.0222, 0.0267, 0.0311, 0.0356,
+        0.0400, 0.0444, 0.0489, 0.0533, 0.0578, 0.0622, 0.0667]))
+
+[07-30 16:56:49] (dgeVAR/VAR/models/var.py, line 259)=> [init_weights] VAR with init_std=0.0180422
+Error in sys.excepthook:
+Traceback (most recent call last):
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1339, in _distributed_excepthook
+    prefix = f"[rank{get_rank()}]"
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1746, in get_rank
+    default_pg = _get_default_group()
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1008, in _get_default_group
+    raise ValueError(
+ValueError: Default process group has not been initialized, please make sure to call init_process_group.
+
+Original exception was:
+Traceback (most recent call last):
+  File "train.py", line 351, in <module>
+    try: main_training()
+  File "train.py", line 200, in main_training
+    ) = build_everything(args)
+  File "train.py", line 97, in build_everything
+    checkpoint = torch.load(args.var_path, map_location='cpu')
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 997, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 444, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 425, in __init__
+    super().__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: ''
+Error in sys.excepthook:
+Traceback (most recent call last):
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1339, in _distributed_excepthook
+    prefix = f"[rank{get_rank()}]"
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1746, in get_rank
+    default_pg = _get_default_group()
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1008, in _get_default_group
+    raise ValueError(
+ValueError: Default process group has not been initialized, please make sure to call init_process_group.
+
+Original exception was:
+Traceback (most recent call last):
+  File "train.py", line 351, in <module>
+    try: main_training()
+  File "train.py", line 200, in main_training
+    ) = build_everything(args)
+  File "train.py", line 97, in build_everything
+    checkpoint = torch.load(args.var_path, map_location='cpu')
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 997, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 444, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 425, in __init__
+    super().__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: ''
+Error in sys.excepthook:
+Traceback (most recent call last):
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1339, in _distributed_excepthook
+    prefix = f"[rank{get_rank()}]"
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1746, in get_rank
+    default_pg = _get_default_group()
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1008, in _get_default_group
+    raise ValueError(
+ValueError: Default process group has not been initialized, please make sure to call init_process_group.
+
+Original exception was:
+Traceback (most recent call last):
+  File "train.py", line 351, in <module>
+    try: main_training()
+  File "train.py", line 200, in main_training
+    ) = build_everything(args)
+  File "train.py", line 97, in build_everything
+    checkpoint = torch.load(args.var_path, map_location='cpu')
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 997, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 444, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 425, in __init__
+    super().__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: ''
+Error in sys.excepthook:
+Traceback (most recent call last):
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1339, in _distributed_excepthook
+    prefix = f"[rank{get_rank()}]"
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1746, in get_rank
+    default_pg = _get_default_group()
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1008, in _get_default_group
+    raise ValueError(
+ValueError: Default process group has not been initialized, please make sure to call init_process_group.
+
+Original exception was:
+Traceback (most recent call last):
+  File "train.py", line 351, in <module>
+    try: main_training()
+  File "train.py", line 200, in main_training
+    ) = build_everything(args)
+  File "train.py", line 97, in build_everything
+    checkpoint = torch.load(args.var_path, map_location='cpu')
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 997, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 444, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 425, in __init__
+    super().__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: ''
+Error in sys.excepthook:
+Traceback (most recent call last):
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1339, in _distributed_excepthook
+    prefix = f"[rank{get_rank()}]"
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1746, in get_rank
+    default_pg = _get_default_group()
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1008, in _get_default_group
+    raise ValueError(
+ValueError: Default process group has not been initialized, please make sure to call init_process_group.
+
+Original exception was:
+Traceback (most recent call last):
+  File "train.py", line 351, in <module>
+    try: main_training()
+  File "train.py", line 200, in main_training
+    ) = build_everything(args)
+  File "train.py", line 97, in build_everything
+    checkpoint = torch.load(args.var_path, map_location='cpu')
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 997, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 444, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 425, in __init__
+    super().__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: ''
+Error in sys.excepthook:
+Traceback (most recent call last):
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1339, in _distributed_excepthook
+    prefix = f"[rank{get_rank()}]"
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1746, in get_rank
+    default_pg = _get_default_group()
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/distributed_c10d.py", line 1008, in _get_default_group
+    raise ValueError(
+ValueError: Default process group has not been initialized, please make sure to call init_process_group.
+
+Original exception was:
+Traceback (most recent call last):
+  File "train.py", line 351, in <module>
+    try: main_training()
+  File "train.py", line 200, in main_training
+    ) = build_everything(args)
+  File "train.py", line 97, in build_everything
+    checkpoint = torch.load(args.var_path, map_location='cpu')
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 997, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 444, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/serialization.py", line 425, in __init__
+    super().__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: ''
+E0730 08:56:54.680282 140127173698624 torch/distributed/elastic/multiprocessing/api.py:826] failed (exitcode: 1) local_rank: 0 (pid: 2028453) of binary: /home/wangzefang/miniconda3/envs/distill/bin/python
+Traceback (most recent call last):
+  File "/home/wangzefang/miniconda3/envs/distill/bin/torchrun", line 33, in <module>
+    sys.exit(load_entry_point('torch==2.3.0', 'console_scripts', 'torchrun')())
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 347, in wrapper
+    return f(*args, **kwargs)
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/run.py", line 879, in main
+    run(args)
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/run.py", line 870, in run
+    elastic_launch(
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/launcher/api.py", line 132, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/wangzefang/miniconda3/envs/distill/lib/python3.8/site-packages/torch/distributed/launcher/api.py", line 263, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+train.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2025-07-30_08:56:54
+  host      : ubuntu
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 2028454)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[2]:
+  time      : 2025-07-30_08:56:54
+  host      : ubuntu
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 2028456)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[3]:
+  time      : 2025-07-30_08:56:54
+  host      : ubuntu
+  rank      : 3 (local_rank: 3)
+  exitcode  : 1 (pid: 2028462)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[4]:
+  time      : 2025-07-30_08:56:54
+  host      : ubuntu
+  rank      : 4 (local_rank: 4)
+  exitcode  : 1 (pid: 2028463)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[5]:
+  time      : 2025-07-30_08:56:54
+  host      : ubuntu
+  rank      : 5 (local_rank: 5)
+  exitcode  : 1 (pid: 2028465)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-07-30_08:56:54
+  host      : ubuntu
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 2028453)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
