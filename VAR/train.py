@@ -109,7 +109,7 @@ def build_everything(args: arg_util.Args):
         var_wo_ddp.load_state_dict(checkpoint, strict=True)
 
     # var_wo_ddp.load_state_dict(torch.load("/wanghuan/data/wangzefang/slim_VAR_copy/VAR/local_output/ar-ckpt-last.pth"))
-    vae_ckpt = '/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_VAR/model_zoo/vae_ch160v4096z32.pth'
+    vae_ckpt = args.vae_path
     vae_local.load_state_dict(torch.load(vae_ckpt, map_location='cpu'), strict=False)
     if dist.is_local_master():
         if not os.path.exists(vae_ckpt):

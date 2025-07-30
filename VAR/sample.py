@@ -16,7 +16,7 @@ from utils import arg_util, misc
 # download checkpoint
 hf_home = 'https://huggingface.co/FoundationVision/var/resolve/main'
 vae_ckpt, var_ckpt = '/wanghuan/data/wangzefang/slim_VAR_copy/VAR/model_zoo/vae_ch160v4096z32.pth', f'/wanghuan/data/wangzefang/slim_VAR_copy/VAR/model_zoo/var_d{MODEL_DEPTH}.pth'
-   
+
 if not osp.exists(vae_ckpt): os.system(f'wget {hf_home}/{vae_ckpt}')
 if not osp.exists(var_ckpt): os.system(f'wget {hf_home}/{var_ckpt}')
 
