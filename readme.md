@@ -1,3 +1,3 @@
 <!-- 1.ffn的剪枝没问题 attn的剪枝有问题 训练的时候要手动改掉不同尺寸模型对应的attn掩码 d24 0.1:128 0.2:320 d16 0.2:192 -->
 
-2.训练的文件的在VAR/train_var.bash中 bash文件内容:var_path和local_out_dir_path都放相同的模型文件 还需要指定vae路径 之后指定好编号 和 数量 就可以开始训练了 训练会自己产生log 训练上传模型发我就好啦！
+2.训练的文件的在VAR/train_var.bash中 bash文件内容:var_path和local_out_dir_path都放相同的模型文件路劲 会自动resume 还需要指定vae路径 之后指定好编号 和 数量 就可以开始训练了 训练会自己产生log 需要根据显卡大小调一下batchsize 训练上传模型发我就好啦！
