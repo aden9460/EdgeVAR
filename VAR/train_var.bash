@@ -50,13 +50,13 @@
 
 
 
-CUDA_VISIBLE_DEVICES=2,3,4,5,6,7 torchrun  \
+CUDA_VISIBLE_DEVICES=1,2,3,4,5,6,7 torchrun  \
   --nnodes=1 \
-  --nproc_per_node=6 \
+  --nproc_per_node=7 \
   --node_rank=0 \
   train.py \
-  --depth=16 --bs=370 --ep=20 --fp16=1 --alng=1e-3 --wpe=0.1 --sparsity=0.2 --local_out_dir_path="/home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i_temporary" --data_path="/home/wangzefang/Datasets/ImageNet-1K" \
-  --var_path="/home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d16_0.2_0-20_200i_temporary" \
+  --depth=24 --bs=1 --ep=1 --fp16=1 --alng=1e-3 --wpe=0.1 --sparsity=0.2 --local_out_dir_path="/home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/d24_0.2_nocompenstate_1epoch_temporary" --data_path="/home/wangzefang/Datasets/ImageNet-1K" \
+  --var_path="/home/wangzefang/edgevar/EdgeVAR/slimgpt_pub/output/sparsity_model/d24_0.2sparsity_150i_256eva_scale_slimgptmethod_nocompensate_temporary.pth" \
   --vae_path='/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_VAR/model_zoo/vae_ch160v4096z32.pth'
 
 # torchrun \

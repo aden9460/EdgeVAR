@@ -1,11 +1,11 @@
 specific_layer=256
-maxlayer=24
-sparsity=0.2
-num_samples=10
-prune_method="taylor"
-model_name="d${maxlayer}_${sparsity}sparsity_${num_samples}i_${specific_layer}eva_scale_${prune_method}method_temporary.pth" 
+maxlayer=16
+sparsity=0.4
+num_samples=150
+prune_method="slimgpt"
+model_name="d${maxlayer}_${sparsity}sparsity_${num_samples}i_${specific_layer}eva_scale_${prune_method}nocompensate_temporary.pth" 
 
-CUDA_VISIBLE_DEVICES=1 python -u /home/wangzefang/edgevar/EdgeVAR/slimgpt_pub/prune_v2.py \
+CUDA_VISIBLE_DEVICES=0 python -u /home/wangzefang/edgevar/EdgeVAR/slimgpt_pub/prune_v2.py \
   --minlayer 0 \
   --maxlayer $maxlayer \
   --num_samples $num_samples \
@@ -15,6 +15,7 @@ CUDA_VISIBLE_DEVICES=1 python -u /home/wangzefang/edgevar/EdgeVAR/slimgpt_pub/pr
   --sparsity $sparsity \
   --specific_layer $specific_layer \
   --model_name $model_name \
+  --no_compensate
   # --seqlen $seqlen \
   # --min_sparsity 0.0625 \
   # --max_sparsity 0.3 \

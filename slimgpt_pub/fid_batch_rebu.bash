@@ -24,7 +24,8 @@
 
 # patch_nums_list=(1 2 3 4 5 6 8 10 13 16)
 #探索不同分割种子对于结果的影响 total_seed=(0 1 2 3 4 5 6 7 8 9) specific_layer=256 maxlayer=24  sparsity=0.1 num_samples=130
-total_seed=(0 1 2 3 4 5 6 7 8 9)
+# total_seed=(0 1 2 3 4 5 6 7 8 9)
+total_seed=() #d16_numsamples
 result_txt="rebuttal1_seed_d16_20%.log"
 > $result_txt  # 清空输出文件
 

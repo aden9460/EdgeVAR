@@ -80,7 +80,7 @@ class SelfAttention(nn.Module):
         self.attn_drop: float = attn_drop
         self.using_flash = flash_if_available and flash_attn_func is not None
         self.using_xform = flash_if_available and memory_efficient_attention is not None
-        self.register_buffer('pruned_indices', torch.zeros(192).int())
+        self.register_buffer('pruned_indices', torch.zeros(384).int())
 
         # only used during inference
         self.caching, self.cached_k, self.cached_v = True, None, None

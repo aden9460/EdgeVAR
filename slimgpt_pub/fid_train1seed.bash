@@ -46,7 +46,8 @@ for seed in "${total_seed[@]}"; do
         /home/wangzefang/edgevar/EdgeVAR/VAR/train.py \
         --depth=$maxlayer --bs=390 --ep=1 --fp16=1 --alng=1e-3 --wpe=0.1 --sparsity=$sparsity \
         --local_out_dir_path="/home/wangzefang/edgevar/EdgeVAR/VAR/traind_model/${model_name}_1epoch" --data_path="/home/wangzefang/Datasets/ImageNet-1K" \
-        --var_path="/home/wangzefang/edgevar/EdgeVAR/slimgpt_pub/output/sparsity_model/${model_name}"
+        --var_path="/home/wangzefang/edgevar/EdgeVAR/slimgpt_pub/output/sparsity_model/${model_name}" \
+        --vae_path='/home/wangzefang/Project/distilled_decoding/VAR/model_zoo/original_VAR/model_zoo/vae_ch160v4096z32.pth'
     fi
     # 3. 等待上一次FID测试完成（第一次不用等）
     if [ -n "$prev_fid_pid" ]; then
